@@ -1,0 +1,84 @@
+Gizmo {
+ addUserKnob {20 Circle3D}
+ addUserKnob {41 display T Curve3D.display}
+ addUserKnob {41 selectable -STARTLINE T Curve3D.selectable}
+ addUserKnob {41 render_mode l render T Curve3D.render_mode}
+ addUserKnob {26 ""}
+ addUserKnob {7 radius l Radius R 0 10}
+ radius 1
+ addUserKnob {26 ""}
+ addUserKnob {41 transform T TransformGeo.transform}
+ addUserKnob {26 spacer l " " T ""}
+ addUserKnob {41 file_menu l "" -STARTLINE T TransformGeo.file_menu}
+ addUserKnob {41 snap_menu l "" -STARTLINE T TransformGeo.snap_menu}
+ addUserKnob {41 xform_order l "transform order" T TransformGeo.xform_order}
+ addUserKnob {41 rot_order l "rotation order" T TransformGeo.rot_order}
+ addUserKnob {41 translate T TransformGeo.translate}
+ addUserKnob {41 rotate T TransformGeo.rotate}
+ addUserKnob {41 scaling l scale T TransformGeo.scaling}
+ addUserKnob {41 uniform_scale l "uniform scale" T TransformGeo.uniform_scale}
+ addUserKnob {41 skew T TransformGeo.skew}
+ addUserKnob {41 pivot T TransformGeo.pivot}
+ addUserKnob {20 "" l "Local matrix" n 2}
+ addUserKnob {41 useMatrix l "specify matrix" T TransformGeo.useMatrix}
+ addUserKnob {41 matrix l "" -STARTLINE T TransformGeo.matrix}
+ addUserKnob {20 "" n -1}
+}
+ Assert {
+  inputs 0
+  expression {{parent.radius!=0 i}}
+  message "cannot be zero"
+  name Radius
+  selected true
+  xpos -164
+  ypos 17
+ }
+ Input {
+  inputs 0
+  name img
+  xpos -288
+  ypos -161
+ }
+ GT_Curve3D {
+  type Bezier
+  closed true
+  Points 1
+  curveEdit {0}
+  npoints 4
+  pt0 {0 {parent.radius i} 0}
+  tIn0 {{-tloc i} 0 0}
+  tOut0 {{tloc i} 0 0}
+  pt1 {{parent.radius i} 0 0}
+  tIn1 {0 {tloc i} 0}
+  tOut1 {0 {-tloc i} 0}
+  pt2 {0 {-parent.radius i} 0}
+  tIn2 {{tloc i} 0 0}
+  tOut2 {{-tloc i} 0 0}
+  pt3 {{-parent.radius i} 0 0}
+  tIn3 {0 {-tloc i} 0}
+  tOut3 {0 {tloc i} 0}
+  name Curve3D
+  xpos -288
+  ypos -104
+  addUserKnob {20 User}
+  addUserKnob {7 tloc}
+  tloc {{parent.radius*0.55 i}}
+ }
+ TransformGeo {
+  name TransformGeo
+  xpos -288
+  ypos -35
+ }
+ Switch {
+  inputs 2
+  which {{parent.radius==0 i}}
+  name Switch1
+  xpos -288
+  ypos 17
+ }
+ Output {
+  name Output
+  xpos -288
+  ypos 127
+ }
+end_group

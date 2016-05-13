@@ -1,0 +1,20 @@
+Geometry Tools 1.1 - 544
+* Further documentation and licensing information can be found in the 'docs' directory.
+* Basic installation is accomplished by moving the top-level directory into one of Nuke's standard plugin paths:
+
+OS X:    /Library/Application Support/Nuke/X.Y/plugins/
+Linux:   /usr/local/Nuke/X.Y/plugins/
+Windows: C:\Program Files\Common Files\Nuke\X.Y\plugins\
+
+* Where X.Y is the major.minor version of Nuke installing for.
+* So for Nuke 9.0 on OS X, the structure would look like this:
+
+/Library/Application Support/Nuke/9.0/plugins/geometry-1.1.544
+		geometry
+		docs
+		geometry
+		icons
+		init.py
+		menu.py
+		plug-ins
+		PyPDF2

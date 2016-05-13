@@ -1,0 +1,63 @@
+Gizmo {
+ inputs 2
+ addUserKnob {20 CurveRevolve}
+ addUserKnob {41 display T CurveRevolve4.display}
+ addUserKnob {41 selectable -STARTLINE T CurveRevolve4.selectable}
+ addUserKnob {41 render_mode l render T CurveRevolve4.render_mode}
+ addUserKnob {41 geo_select T CurveRevolve4.geo_select}
+ addUserKnob {26 ""}
+ addUserKnob {41 tesselation l Tessellation T CurveRevolve4.tesselation}
+ addUserKnob {41 tesselationDivisions l "as divisions" -STARTLINE T CurveRevolve4.tesselationDivisions}
+ addUserKnob {41 origin l Origin T CurveRevolve4.origin}
+ addUserKnob {41 axis l Axis T CurveRevolve4.axis}
+ addUserKnob {41 divisions l Divisions T CurveRevolve4.divisions}
+ addUserKnob {41 range l Range T CurveRevolve4.range}
+ addUserKnob {41 flags l Flags T CurveRevolve4.flags}
+ addUserKnob {6 merge l Merge -STARTLINE}
+ merge true
+ addUserKnob {41 smoothNormals l "Smooth Normals" T CurveRevolve4.smoothNormals}
+}
+ Input {
+  inputs 0
+  name curve
+  xpos 378
+  ypos -234
+  number 1
+ }
+ Input {
+  inputs 0
+  name img
+  xpos 508
+  ypos -235
+ }
+ GT_CurveRevolve {
+  inputs 2
+  flags {}
+  name CurveRevolve
+  selected true
+  xpos 454
+  ypos -179
+ }
+set N188c7960 [stack 0]
+ GT_PolyFacet {
+  edgeMode Remove
+  pointMode Merge
+  threshold 0.0001
+  name MergeVerts
+  xpos 643
+  ypos -155
+ }
+push $N188c7960
+ Switch {
+  inputs 2
+  which {{parent.merge i}}
+  name Switch
+  xpos 454
+  ypos -97
+ }
+ Output {
+  name Output
+  xpos 454
+  ypos -50
+ }
+end_group

@@ -1,0 +1,75 @@
+Gizmo {
+ addUserKnob {20 PolyCube}
+ addUserKnob {41 display T Cube1.display}
+ addUserKnob {41 selectable -STARTLINE T Cube1.selectable}
+ addUserKnob {41 render_mode l render T Cube1.render_mode}
+ addUserKnob {41 geo_select T Cube1.geo_select}
+ addUserKnob {26 ""}
+ addUserKnob {14 divisions l Divisions R 0 100}
+ divisions 10
+ addUserKnob {7 w l Width R 0 100}
+ w 1
+ addUserKnob {7 h l Height R 0 100}
+ h 1
+ addUserKnob {7 l l Length R 0 100}
+ l 1
+ addUserKnob {41 layout l Layout T PolyUV1.layout}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {41 transform T Cube1.transform}
+ addUserKnob {26 a l "  " T ""}
+ addUserKnob {41 file_menu l "" -STARTLINE T Cube1.file_menu}
+ addUserKnob {41 snap_menu l "" -STARTLINE T Cube1.snap_menu}
+ addUserKnob {41 xform_order l "transform order" T Cube1.xform_order}
+ addUserKnob {41 rot_order l "rotation order" T Cube1.rot_order}
+ addUserKnob {41 translate T Cube1.translate}
+ addUserKnob {41 rotate T Cube1.rotate}
+ addUserKnob {41 scaling l scale T Cube1.scaling}
+ addUserKnob {41 uniform_scale l "uniform scale" T Cube1.uniform_scale}
+ addUserKnob {41 skew T Cube1.skew}
+ addUserKnob {41 pivot T Cube1.pivot}
+ addUserKnob {20 "" l "Local matrix" n 2}
+ addUserKnob {41 useMatrix l "specify matrix" T Cube1.useMatrix}
+ addUserKnob {41 matrix l "" +STARTLINE T Cube1.matrix}
+ addUserKnob {20 "" n -1}
+}
+ Input {
+  inputs 0
+  name img
+  xpos -93
+  ypos -209
+ }
+ Cube {
+  rows {{parent.divisions.1 i}}
+  columns {{parent.divisions.0 i}}
+  separate_faces false
+  cube {{parent.w*-0.5 i} {parent.h*-0.5 i} {parent.l*-0.5 i} {parent.w*0.5 i} {parent.h*0.5 i} {parent.l*0.5 i}}
+  name Cube1
+  xpos -93
+  ypos -169
+ }
+set Nedf56e0 [stack 0]
+ GT_PolyUV {
+  enable false
+  uvSelection {t {} }
+  projection 6-plane
+  layout Shelf
+  scale {1 1}
+  name PolyUV1
+  selected true
+  xpos 17
+  ypos -169
+ }
+push $Nedf56e0
+ Switch {
+  inputs 2
+  which {{parent.layout?1:0 i}}
+  name Switch1
+  xpos -93
+  ypos -87
+ }
+ Output {
+  name Output1
+  xpos -93
+  ypos 13
+ }
+end_group

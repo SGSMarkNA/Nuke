@@ -1,0 +1,3 @@
+import nuke
+from Nuke_Scripts.SystemFns.files_and_folders import createWriteDir
+nuke.addBeforeRender(createWriteDir)

@@ -1,0 +1,29 @@
+Gizmo {
+ addUserKnob {20 PolyFuse}
+ addUserKnob {41 display T PolyFacet1.display}
+ addUserKnob {41 selectable -STARTLINE T PolyFacet1.selectable}
+ addUserKnob {41 render_mode l render T PolyFacet1.render_mode}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {41 threshold l Threshold T PolyFacet1.threshold}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 462
+  ypos -270
+ }
+ GT_PolyFacet {
+  enable false
+  pointMode Merge
+  threshold 0.001
+  name PolyFacet1
+  selected true
+  xpos 462
+  ypos -207
+ }
+ Output {
+  name Output1
+  xpos 462
+  ypos -130
+ }
+end_group

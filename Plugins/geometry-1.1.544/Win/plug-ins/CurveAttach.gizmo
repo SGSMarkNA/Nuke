@@ -1,0 +1,68 @@
+Gizmo {
+ inputs 2
+ addUserKnob {20 CurveAttach}
+ addUserKnob {41 display T Axis.display}
+ addUserKnob {41 selectable -STARTLINE T Axis.selectable}
+ addUserKnob {26 ""}
+ addUserKnob {7 u l U}
+ addUserKnob {7 roll l Roll t "Roll matrix around z-axis. 1 is 360 degrees."}
+ addUserKnob {41 flags l " " t "@b;up@n; Use specified up vector or reference frame for matrix.\n@b;blend@n; Blend tangent between sampled points. Probably off only for linear curves.\n@b;reverse@n; Make z-axis point toward or away from next point.\n@b;flip@n; Roll axis 180 degrees" T CurveSampler.flags}
+ addUserKnob {6 reverse l Reverse t "Make z-axis point toward or away from next point." -STARTLINE}
+ addUserKnob {6 flip l Flip t "Roll axis 180 degrees" -STARTLINE}
+ addUserKnob {41 up l Up t "Up vector to use when @b;up@n; is on" T CurveSampler.up}
+ addUserKnob {26 ""}
+ addUserKnob {13 pos l Position}
+ pos {{CurveSampler.world_matrix.3} {CurveSampler.world_matrix.7} {CurveSampler.world_matrix.11}}
+}
+ Input {
+  inputs 0
+  name curve
+  xpos -285
+  ypos -229
+ }
+ Input {
+  inputs 0
+  name axis
+  xpos -143
+  ypos -235
+  number 1
+ }
+ GT_CurveSampler {
+  inputs 2
+  display off
+  selectable false
+  useMatrix true
+  u {{"min(max(parent.u,0.000001), 0.999999)" i}}
+  name CurveSampler
+  xpos -209
+  ypos -162
+ }
+set Nfbf1eb0 [stack 0]
+ Axis {
+  display off
+  selectable false
+  rotate {{"parent.reverse ? 180 : 0" i} 0 {"parent.flip ? 180 : 0" i}}
+  name reverseCowFlip
+  xpos -3
+  ypos -162
+ }
+push $Nfbf1eb0
+ Switch {
+  inputs 2
+  which {{parent.reverse|parent.flip i}}
+  name Switch1
+  xpos -124
+  ypos -51
+ }
+ Axis2 {
+  rotate {0 0 {parent.roll*360 i}}
+  name Axis
+  xpos -114
+  ypos 31
+ }
+ Output {
+  name Output1
+  xpos -124
+  ypos 117
+ }
+end_group

@@ -1,0 +1,69 @@
+Gizmo {
+ inputs 2
+ addUserKnob {20 CurveExtrude}
+ addUserKnob {41 display T CurveSweep1.display}
+ addUserKnob {41 selectable -STARTLINE T CurveSweep1.selectable}
+ addUserKnob {41 render_mode l render T CurveSweep1.render_mode}
+ addUserKnob {41 geo_select T CurveSweep1.geo_select}
+ addUserKnob {26 ""}
+ addUserKnob {41 length l Length T Curve3D.pt1}
+ addUserKnob {41 backbone l Backbone T CurveSweep1.backbone}
+ addUserKnob {41 backboneDivisions l "as divisions" -STARTLINE T CurveSweep1.backboneDivisions}
+ addUserKnob {41 curve l Curve T CurveSweep1.curve}
+ addUserKnob {41 curveDivisions l "as divisions" -STARTLINE T CurveSweep1.curveDivisions}
+ addUserKnob {41 range l Range T CurveSweep1.range}
+ addUserKnob {41 startVariation l Variation T CurveSweep1.startVariation}
+ addUserKnob {41 endVariation l "" -STARTLINE T CurveSweep1.endVariation}
+ addUserKnob {41 scale l Scale T CurveSweep1.scale}
+ addUserKnob {41 twist l Twist T CurveSweep1.twist}
+ addUserKnob {20 Profile n 2}
+ addUserKnob {41 profile l "" -STARTLINE T CurveSweep1.profile}
+ addUserKnob {20 "" n -1}
+ addUserKnob {26 ""}
+ addUserKnob {41 flags l Flags T CurveSweep1.flags}
+ addUserKnob {41 profileLookup l "Profile Lookup" T CurveSweep1.profileLookup}
+ addUserKnob {41 uvMode l "UV Mode" T CurveSweep1.uvMode}
+ addUserKnob {41 smoothNormals l "Smooth Normals" T CurveSweep1.smoothNormals}
+}
+ GT_Curve3D {
+  inputs 0
+  type Bezier
+  Points 1
+  curveEdit {0}
+  npoints 2
+  pt1 {0 0 5}
+  name Curve3D
+  xpos 85
+  ypos -72
+ }
+ Input {
+  inputs 0
+  name curve
+  xpos 223
+  ypos -154
+ }
+ Input {
+  inputs 0
+  name img
+  xpos 366
+  ypos -72
+  number 1
+ }
+ GT_CurveSweep {
+  inputs 3
+  flags {Close}
+  backbone 2
+  backboneDivisions true
+  curve 15
+  curveDivisions true
+  name CurveSweep1
+  selected true
+  xpos 223
+  ypos -72
+ }
+ Output {
+  name Output1
+  xpos 223
+  ypos -6
+ }
+end_group
