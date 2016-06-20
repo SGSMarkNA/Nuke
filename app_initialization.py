@@ -1,5 +1,7 @@
 import os
-
+import nuke
+import nukescripts
+from Environment_Access import System_Paths, System_Settings, utilities
 
 
 
@@ -8,19 +10,12 @@ if os.name == 'nt':
 	is_NT = True
 else:
 	is_NT = False
-import nukescripts
 os.environ["QT_PACKAGE"] = "PySide"
-USE_WING_DEBUG = int(os.environ.get("USE_WING_DEBUG", 0))
-if USE_WING_DEBUG:
+if System_Settings.USE_WING_DEBUG:
 	try:
 		import wingdbstub
 	except:
 		pass
-	
-try:
-	import nuke
-except:
-	nuke = None
 
 def drag_drop_shotgun_shot(mimeType, text):
 	if mimeType == "text/plain":
@@ -76,21 +71,14 @@ def Add_User_Tools_Packages_To_Path(folder):
 		os.sys.path.append(path)
 		
 #----------------------------------------------------------------------
-AW_BASE                = get_and_set_environ_key_path("AW_BASE", os.path.realpath(os.path.dirname(__file__)+"/.."), False, True)
+# AW_BASE                = get_and_set_environ_key_path("AW_BASE", os.path.realpath(os.path.dirname(__file__)+"/.."), False, True)
 #----------------------------------------------------------------------
-if os.name == 'nt':
-	AW_SITE_PACKAGES       = get_and_set_environ_key_path("AW_SITE_PACKAGES", "//Blue/app_config/python/AW_site_packages", True)
-else:
-	AW_SITE_PACKAGES       = get_and_set_environ_key_path("AW_SITE_PACKAGES", "/Volumes/app_config/python/AW_site_packages", True)
 #----------------------------------------------------------------------
-AW_GIZMOS_PATH         = get_and_set_environ_key_path("NUKE_GIZMOS", os.path.join(AW_BASE, "Nuke_Gizmos"), False)
+AW_GIZMOS_PATH         = utilities.add_To_Multi_Path_Environment_Key("NUKE_GIZMOS", System_Paths._CODE_NUKE_GIZMOS)
 #----------------------------------------------------------------------
-AW_NUKE_PLUGINS_PATH   = get_and_set_environ_key_path("NUKE_PLUGINS", os.path.join(AW_BASE, "Nuke", "Plugins"), False, True)
+AW_NUKE_PLUGINS_PATH   = utilities.add_To_Multi_Path_Environment_Key("NUKE_PLUGINS", [System_Paths._CODE_NUKE_PLUGINS])
 #----------------------------------------------------------------------
-if os.name == 'nt':
-	AW_NUKE_USER_TOOLS_DIR = get_and_set_environ_key_path("NUKE_USER_TOOLS_DIR","//Blue/app_config/Git_Live_Code/User_Tools/Nuke_User_Tools", False, True)
-else:
-	AW_NUKE_USER_TOOLS_DIR = get_and_set_environ_key_path("NUKE_USER_TOOLS_DIR","/Volumes/app_config/Git_Live_Code/User_Tools/Nuke_User_Tools", False, True)
+AW_NUKE_USER_TOOLS_DIR = utilities.get_and_set_environ_key("NUKE_USER_TOOLS_DIR", System_Paths._CODE_NUKE_USER_TOOLS)
 #----------------------------------------------------------------------
 
 if os.path.exists(AW_NUKE_USER_TOOLS_DIR):
@@ -99,30 +87,30 @@ if os.path.exists(AW_NUKE_USER_TOOLS_DIR):
 if nuke != None:
 	import Nuke_Scripts.SystemFns.paths
 	import Nuke_Scripts.Callbacks
-	Nuke_Scripts.SystemFns.paths.AddGizmo_Paths(AW_GIZMOS_PATH)
-	nuke.pluginAppendPath(AW_NUKE_PLUGINS_PATH)
+	Nuke_Scripts.SystemFns.paths.AddGizmo_Paths(System_Paths._CODE_NUKE_GIZMOS)
+	nuke.pluginAppendPath(System_Paths._CODE_NUKE_PLUGINS)
 	
 	## Geometry_Tools plugins...
-	if os.path.exists(AW_NUKE_PLUGINS_PATH+"/geometry-1.1.544"):
+	if os.path.exists(System_Paths._CODE_NUKE_PLUGINS+"/geometry-1.1.544"):
 		if is_NT:
-			nuke.pluginAppendPath(AW_NUKE_PLUGINS_PATH+"/geometry-1.1.544/Win")
+			nuke.pluginAppendPath(System_Paths._CODE_NUKE_PLUGINS+"/geometry-1.1.544/Win")
 		else:
-			nuke.pluginAppendPath(AW_NUKE_PLUGINS_PATH+"/geometry-1.1.544/Mac")
+			nuke.pluginAppendPath(System_Paths._CODE_NUKE_PLUGINS+"/geometry-1.1.544/Mac")
 		try:
 			import geometry
 		except:
 			print "Did Not Import Geometry Plugins"
 			
 	## J_Ops plugins...
-	if os.path.exists(AW_NUKE_PLUGINS_PATH+"/J_Ops_2.3v1_for_Nuke9.0"):
+	if os.path.exists(System_Paths._CODE_NUKE_PLUGINS+"/J_Ops_2.3v1_for_Nuke9.0"):
 		if is_NT:
-			nuke.pluginAppendPath(AW_NUKE_PLUGINS_PATH+"/J_Ops_2.3v1_for_Nuke9.0/Win/J_Ops/py")
-			nuke.pluginAddPath(AW_NUKE_PLUGINS_PATH+"/J_Ops_2.3v1_for_Nuke9.0/Win/J_Ops/ndk")
-			nuke.pluginAddPath(AW_NUKE_PLUGINS_PATH+"/J_Ops_2.3v1_for_Nuke9.0/Win/J_Ops/icons")
+			nuke.pluginAppendPath(System_Paths._CODE_NUKE_PLUGINS+"/J_Ops_2.3v1_for_Nuke9.0/Win/J_Ops/py")
+			nuke.pluginAddPath(System_Paths._CODE_NUKE_PLUGINS+"/J_Ops_2.3v1_for_Nuke9.0/Win/J_Ops/ndk")
+			nuke.pluginAddPath(System_Paths._CODE_NUKE_PLUGINS+"/J_Ops_2.3v1_for_Nuke9.0/Win/J_Ops/icons")
 		else:
-			nuke.pluginAppendPath(AW_NUKE_PLUGINS_PATH+"/J_Ops_2.3v1_for_Nuke9.0/Mac/J_Ops/py")
-			nuke.pluginAddPath(AW_NUKE_PLUGINS_PATH+"/J_Ops_2.3v1_for_Nuke9.0/Mac/J_Ops/ndk")
-			nuke.pluginAddPath(AW_NUKE_PLUGINS_PATH+"/J_Ops_2.3v1_for_Nuke9.0/Mac/J_Ops/icons")
+			nuke.pluginAppendPath(System_Paths._CODE_NUKE_PLUGINS+"/J_Ops_2.3v1_for_Nuke9.0/Mac/J_Ops/py")
+			nuke.pluginAddPath(System_Paths._CODE_NUKE_PLUGINS+"/J_Ops_2.3v1_for_Nuke9.0/Mac/J_Ops/ndk")
+			nuke.pluginAddPath(System_Paths._CODE_NUKE_PLUGINS+"/J_Ops_2.3v1_for_Nuke9.0/Mac/J_Ops/icons")
 		try:
 			import J_Ops
 		except ImportError:
