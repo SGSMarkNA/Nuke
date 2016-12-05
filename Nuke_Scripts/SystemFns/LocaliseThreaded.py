@@ -224,7 +224,7 @@ def localiseFileThreaded(readKnobList):
 	if sequenceCount > 1:
 		p = nuke.Panel('Localiser (threaded)')
 		knobName = 'concurrent copy tasks'
-		p.addEnumerationPulldown(knobName, ' '.join([str(i+1) for i in xrange(min(nuke.THREADS, sequenceCount, 4))]))
+		p.addEnumerationPulldown(knobName, ' '.join([str(i+1) for i in xrange(min(nuke.THREADS, sequenceCount, 10))]))
 		if p.show():
 			maxThreads = int(p.value(knobName))
 		else:

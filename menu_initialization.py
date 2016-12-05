@@ -55,6 +55,17 @@ SCRIPTING_TOOLS.addCommand("Set Selected Node to G_node Var","G_node = nuke.sele
 SCRIPTING_TOOLS.addCommand("Set Selected Node to G_node2 Var","import Nuke_Scripts.NukeNodes\nG_node2 = Nuke_Scripts.NukeNodes.Node(nuke.selectedNode())")
 SCRIPTING_TOOLS.addCommand("Set Selected Nodes to G_nodes Var","G_nodes = nuke.selectedNodes()")
 
+
+# Handy Web Links, including the AW Wiki...
+import webbrowser
+
+urls = []
+urls.append(("AW Weblinks/AW Wiki", "http://wiki.armstrong-white.com/"))
+
+for title, url in urls:
+	nuke.menu('Nuke').addCommand(title, "webbrowser.open('{url}')".format(url=url))
+
+
 #Animation Graph Menu
 nuke.menu('Animation').addCommand('Bookend', "import Nuke_Scripts.KnobFns.bookend\nNuke_Scripts.KnobFns.bookend.bookend()")
 
@@ -74,5 +85,18 @@ try:
 	os.sys.path.append(os.environ["NUKE_USER_TOOLS_DIR"])
 	import UserTools
 	nukescripts.executeDeferred(UserTools.pythonScripts)
+except:
+	pass
+
+try:
+	os.sys.path.append(os.environ["NUKE_USER_TOOLS_DIR"])
+	import sRGB_Preview_Tools.Photoshop_sRGB_Preview_Tools
+	# Add button to Nuke Toolbar
+	if os.name == 'nt':
+		toolbar = nuke.toolbar("Nodes")
+		toolbar.addCommand("sRGB Workflow", "sRGB_Preview_Tools.Photoshop_sRGB_Preview_Tools.start()", icon = os.path.join(os.environ['NUKE_USER_TOOLS_DIR'], "Rich", "sRGB_Preview_Tools", "sRGB_Icon.png").replace('\\', '/'))
+	elif os.name =='posix':
+		toolbar = nuke.toolbar("Nodes")
+		toolbar.addCommand("sRGB Workflow", "sRGB_Preview_Tools.Photoshop_sRGB_Preview_Tools.start()", icon = os.path.join(os.environ['NUKE_USER_TOOLS_DIR'], "Rich", "sRGB_Preview_Tools", "sRGB_Icon.png"))  
 except:
 	pass
