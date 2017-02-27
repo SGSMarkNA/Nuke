@@ -1,4 +1,3 @@
-# I replace The Org file with the verseron from deadline 7
 import os, sys, subprocess, traceback
 import nuke, nukescripts
 
