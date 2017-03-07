@@ -8,7 +8,6 @@
 # setupPaths(False, True)    -> <installion root>/plug-ins/macos
 
 import nuke
-
 def setupPaths(versioned=False, platformed = False):
 	import os.path as op, posixpath as pp
 	base = op.dirname(op.dirname(__file__))
@@ -20,8 +19,11 @@ def setupPaths(versioned=False, platformed = False):
 		plugs = pp.join(plugs, platform)
 
 	nuke.pluginAddPath( plugs )
+	nuke.pluginAppendPath(plugs)
 	nuke.pluginAddPath( pp.join(base, 'rsrc') )
 	nuke.pluginAddPath( pp.join(base, 'icons') )
+	nuke.pluginAppendPath(pp.join(base, 'icons') )
+	nuke.pluginAppendPath(pp.join(base, 'rsrc'))
 
 setupPaths()
 
