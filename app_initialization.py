@@ -5,7 +5,6 @@ from Environment_Access import System_Paths, System_Settings, utilities
 
 
 
-
 if os.name == 'nt':
 	is_NT = True
 else:
@@ -16,6 +15,7 @@ if System_Settings.USE_WING_DEBUG:
 		import wingdbstub
 	except:
 		pass
+
 
 def drag_drop_shotgun_shot(mimeType, text):
 	if mimeType == "text/plain":
