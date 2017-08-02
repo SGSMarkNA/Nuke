@@ -61,6 +61,7 @@ import webbrowser
 
 urls = []
 urls.append(("Weblinks/AW Wiki", "http://wiki.armstrong-white.com/mediawiki/index.php/Main_Page"))
+urls.append(("Weblinks/Guidelines:Monitor Calibration", "http://wiki.armstrong-white.com/mediawiki/index.php/Guidelines:Monitor_Calibration"))
 urls.append(("Weblinks/Nukepedia", "http://nukepedia.com/"))
 
 for title, url in urls:

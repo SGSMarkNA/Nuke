@@ -157,3 +157,24 @@ else:
 nuke.knobDefault( 'Shuffle.label', '[value in]' )
 
 ##  -------------------------------------------------------------------------
+
+
+
+
+##  -------------------------------------------------------------------------
+##  WriteNodeMetadata --->> Adds Metadata Tab to all Write nodes!
+##  Callbacks on tab for adding an ICC Profile to an image, adding XMP/IPTC creator
+##  and contact info for Armstrong White. Required by Innocean/Hyundai client.
+##  -------------------------------------------------------------------------
+
+import sys
+modulename = 'WriteNodeMetadata'
+try:
+	os.sys.path.append('\\isln-smb\Git_Live_Code\Global_Systems\User_Tools\Nuke_User_Tools\Rich')
+	import Callbacks_WriteNodeMetadata
+	print 'Successfully imported the {} module.'.format(modulename)
+except:
+	if modulename not in sys.modules:
+		print 'You have not imported the {} module.'.format(modulename)
+		
+##  -------------------------------------------------------------------------

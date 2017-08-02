@@ -1,52 +1,81 @@
-# I replace The Org file with the verseron from deadline 7
-import os, sys, subprocess, traceback
-import nuke, nukescripts
+import os
+import sys
+import subprocess
+import traceback
+import errno
 
-def GetRepositoryRoot():
-    # On OSX, we look for the DEADLINE_PATH file. On other platforms, we use the environment variable.
-    if os.path.exists( "/Users/Shared/Thinkbox/DEADLINE_PATH" ):
-        with open( "/Users/Shared/Thinkbox/DEADLINE_PATH" ) as f: deadlineBin = f.read().strip()
-        deadlineCommand = deadlineBin + "/deadlinecommand"
-    else:
-        try:
-            deadlineBin = os.environ['DEADLINE_PATH']
-        except KeyError:
-            return ""
+import nuke
+import nukescripts
+
+def GetDeadlineCommand():
+    deadlineBin = ""
+    try:
+        deadlineBin = os.environ['DEADLINE_PATH']
+    except KeyError:
+        #if the error is a key error it means that DEADLINE_PATH is not set. however Deadline command may be in the PATH or on OSX it could be in the file /Users/Shared/Thinkbox/DEADLINE_PATH
+        pass
+        
+    # On OSX, we look for the DEADLINE_PATH file if the environment variable does not exist.
+    if deadlineBin == "" and  os.path.exists( "/Users/Shared/Thinkbox/DEADLINE_PATH" ):
+        with open( "/Users/Shared/Thinkbox/DEADLINE_PATH" ) as f:
+            deadlineBin = f.read().strip()
+
+    deadlineCommand = os.path.join(deadlineBin, "deadlinecommand")
     
-        if os.name == 'nt':
-            deadlineCommand = deadlineBin + "\\deadlinecommand.exe"
-        else:
-            deadlineCommand = deadlineBin + "/deadlinecommand"
+    return deadlineCommand
+
+def GetRepositoryPath(subdir = None):
+    deadlineCommand = GetDeadlineCommand()
     
     startupinfo = None
-    if os.name == 'nt' and hasattr( subprocess, 'STARTF_USESHOWWINDOW' ): #not all python versions have this
-        startupinfo = subprocess.STARTUPINFO()
-        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+    if os.name == 'nt':
+        # Python 2.6 has subprocess.STARTF_USESHOWWINDOW, and Python 2.7 has subprocess._subprocess.STARTF_USESHOWWINDOW, so check for both.
+        if hasattr( subprocess, '_subprocess' ) and hasattr( subprocess._subprocess, 'STARTF_USESHOWWINDOW' ):
+            startupinfo = subprocess.STARTUPINFO()
+            startupinfo.dwFlags |= subprocess._subprocess.STARTF_USESHOWWINDOW
+        elif hasattr( subprocess, 'STARTF_USESHOWWINDOW' ):
+            startupinfo = subprocess.STARTUPINFO()
+            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
     
-    proc = subprocess.Popen([deadlineCommand, "-root"], cwd=deadlineBin, stdout=subprocess.PIPE, startupinfo=startupinfo)
+    args = [deadlineCommand, "-GetRepositoryPath "]   
+    if subdir != None and subdir != "":
+        args.append(subdir)
     
-    root = proc.stdout.read()
-    root = root.replace("\n","").replace("\r","")
-    return root
+    attempts = 0
+    path = ""
+    while attempts < 10 and path == "":
+        try:
+            proc = subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, startupinfo=startupinfo)
+            path, errors = proc.communicate()
+            path = path.replace("\n","").replace("\r","")
+        except (OSError, IOError) as e:
+            if e.errno == errno.EINTR:
+                attempts += 1
+                if attempts == 10:
+                    nuke.message( "Failed to get results from Deadline command 10 times.  Please try again" )
+                continue
+            raise
+    return path
 
 def main():
-    # Get the repository root
-    path = GetRepositoryRoot()
+    # Get the repository path
+    path = GetRepositoryPath("custom/scripts/Submission/Nuke/Main")
     if path != "":
-        path += "/submission/Nuke/Main"
         path = path.replace( "\\", "/" )
-        
+
         # Add the path to the system path
         if path not in sys.path :
             print "Appending \"" + path + "\" to system path to import SubmitNukeToDeadline module"
             sys.path.append( path )
+        else:
+            print( "\"%s\" is already in the system path" % path )
 
         # Import the script and call the main() function
         try:
             import SubmitNukeToDeadline
-            SubmitNukeToDeadline.SubmitToDeadline( path )
+            SubmitNukeToDeadline.SubmitToDeadline(path)
         except:
             print traceback.format_exc()
-            nuke.message( "The SubmitNukeToDeadline.py script could not be found in the Deadline Repository. Please make sure that the Deadline Client has been installed on this machine, that the Deadline Client bin folder is set in the DEADLINE_PATH environment variable, and that the Deadline Client has been configured to point to a valid Repository." )
+            nuke.message( traceback.format_exc() + "The SubmitNukeToDeadline.py failed with the following error message. Please make sure that the Deadline Client has been installed on this machine, that the Deadline Client bin folder is set in the DEADLINE_PATH environment variable, and that the Deadline Client has been configured to point to a valid Repository.\n\n"+traceback.format_exc() )
     else:
-        nuke.message( "The SubmitNukeToDeadline.py script could not be found in the Deadline Repository. Please make sure that the Deadline Client has been installed on this machine, that the Deadline Client bin folder is set in the DEADLINE_PATH environment variable, and that the Deadline Client has been configured to point to a valid Repository." )
+        nuke.message( "The environment variable DEADLINE_PATH has not been set up on this machine. Please make sure that the Deadline Client has been installed on this machine." )

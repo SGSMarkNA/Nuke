@@ -30,7 +30,10 @@ def createWriteDir():
 			#print "Checking for Dir %s" % osdir
 			if not os.path.exists(osdir):
 				#print "creating Dir %s" % osdir
-				os.makedirs(osdir)
+				try:
+					os.makedirs(osdir)
+				except WindowsError:
+					print "Cannot create file. It may already exist..."
 		fknob.setValue(oldname)
 	else:
 		#print "Making Single Directory"
@@ -38,4 +41,7 @@ def createWriteDir():
 		d = os.path.dirname(f)
 		osdir = nuke.callbacks.filenameFilter(d)
 		if not os.path.exists(osdir):
-			os.makedirs(osdir)
+			try:
+				os.makedirs(osdir)
+			except WindowsError:
+				print "Cannot create file. It may already exist..."
