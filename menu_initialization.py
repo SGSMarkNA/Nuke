@@ -55,18 +55,123 @@ SCRIPTING_TOOLS.addCommand("Set Selected Node to G_node Var","G_node = nuke.sele
 SCRIPTING_TOOLS.addCommand("Set Selected Node to G_node2 Var","import Nuke_Scripts.NukeNodes\nG_node2 = Nuke_Scripts.NukeNodes.Node(nuke.selectedNode())")
 SCRIPTING_TOOLS.addCommand("Set Selected Nodes to G_nodes Var","G_nodes = nuke.selectedNodes()")
 
+##-------------------------------------------------------------------
+## AW_COLOR_TOOLS Menus for OCIO / ACES colorManagement
+##-------------------------------------------------------------------
+# NOTE: OCIO_CONFIG_FILE is set in System_Paths.py and System_Settings.py
+from Environment_Access import System_Paths, System_Settings, utilities
+OCIO_CONFIG_FILE = System_Settings.OCIO_CONFIG_FILE
 
-# Handy Web Links, including the AW Wiki...
+# Determine whether to add the AW_COLOR_TOOLS menus, based on the Nuke version.
+# Anything earlier than ver. 10.5 will not add the buttons.
+Major = nuke.NUKE_VERSION_MAJOR
+Minor = nuke.NUKE_VERSION_MINOR
+try:
+	if Major == 10 and Minor >= 5:
+		
+		# Nuke uses forward slashes...
+		ConfigFile = OCIO_CONFIG_FILE.replace('\\', '/')
+		
+		# Set Deka color workflow OCIO configuration settings with sRGB preview...
+		def set_AW_COLOR_colorManagement_Deka_sRGB():
+			nuke.Root().knob('colorManagement').setValue('OCIO')
+			nuke.Root().knob('customOCIOConfigPath').setValue(ConfigFile)
+			nuke.Root().knob('OCIO_config').setValue('custom')
+			nuke.Root().knob('workingSpaceLUT').setValue('ACES/ACES - ACES2065-1')
+			nuke.Root().knob('monitorLut').setValue('AW/Deka_Gamma_sRGB')
+			nuke.Root().knob('int8Lut').setValue('AW/Deka_Gamma')
+			nuke.Root().knob('int16Lut').setValue('AW/Deka_Gamma')
+			nuke.Root().knob('logLut').setValue('ACES/ACES - ACES2065-1')
+			nuke.Root().knob('floatLut').setValue('ACES/ACES - ACES2065-1')
+			# Set the active Viewer to the monitorLUT value...
+			nuke.activeViewer().node().knob('viewerProcess').setValue('Deka_Gamma_sRGB')
+			
+		# Set Deka color workflow OCIO configuration settings with AdobeRGB(1998) preview...
+		def set_AW_COLOR_colorManagement_Deka_Adobe98():
+			nuke.Root().knob('colorManagement').setValue('OCIO')
+			nuke.Root().knob('customOCIOConfigPath').setValue(ConfigFile)
+			nuke.Root().knob('OCIO_config').setValue('custom')
+			nuke.Root().knob('workingSpaceLUT').setValue('ACES/ACES - ACES2065-1')
+			nuke.Root().knob('monitorLut').setValue('AW/Deka_Gamma_Adobe98')
+			nuke.Root().knob('int8Lut').setValue('AW/Deka_Gamma')
+			nuke.Root().knob('int16Lut').setValue('AW/Deka_Gamma')
+			nuke.Root().knob('logLut').setValue('ACES/ACES - ACES2065-1')
+			nuke.Root().knob('floatLut').setValue('ACES/ACES - ACES2065-1')
+			# Set the active Viewer to the monitorLUT value...
+			nuke.activeViewer().node().knob('viewerProcess').setValue('Deka_Gamma_Adobe98')
+		
+		# Set Legacy/Linear color workflow OCIO configuration settings with sRGB preview...
+		def set_AW_COLOR_colorManagement_Legacy_sRGB():
+			nuke.Root().knob('colorManagement').setValue('OCIO')
+			nuke.Root().knob('customOCIOConfigPath').setValue(ConfigFile)
+			nuke.Root().knob('OCIO_config').setValue('custom')
+			nuke.Root().knob('workingSpaceLUT').setValue('ACES/ACES - ACES2065-1')
+			nuke.Root().knob('monitorLut').setValue('AW/sRGB_ICC(sRGB)')
+			nuke.Root().knob('int8Lut').setValue('AW/sRGB')
+			nuke.Root().knob('int16Lut').setValue('AW/sRGB')
+			nuke.Root().knob('logLut').setValue('ACES/ACES - ACES2065-1')
+			nuke.Root().knob('floatLut').setValue('ACES/ACES - ACES2065-1')
+			# Set the active Viewer to the monitorLUT value...
+			nuke.activeViewer().node().knob('viewerProcess').setValue('sRGB_ICC(sRGB)')
+			
+		# Set Legacy/Linear color workflow OCIO configuration settings with AdobeRGB(1998) preview...
+		def set_AW_COLOR_colorManagement_Legacy_Adobe98():
+			nuke.Root().knob('colorManagement').setValue('OCIO')
+			nuke.Root().knob('customOCIOConfigPath').setValue(ConfigFile)
+			nuke.Root().knob('OCIO_config').setValue('custom')
+			nuke.Root().knob('workingSpaceLUT').setValue('ACES/ACES - ACES2065-1')
+			nuke.Root().knob('monitorLut').setValue('AW/sRGB_ICC(Adobe98)')
+			nuke.Root().knob('int8Lut').setValue('AW/sRGB')
+			nuke.Root().knob('int16Lut').setValue('AW/sRGB')
+			nuke.Root().knob('logLut').setValue('ACES/ACES - ACES2065-1')
+			nuke.Root().knob('floatLut').setValue('ACES/ACES - ACES2065-1')
+			# Set the active Viewer to the monitorLUT value...
+			nuke.activeViewer().node().knob('viewerProcess').setValue('sRGB_ICC(Adobe98)')
+		
+		# Set Original Nuke Default color workflow settings with sRGB Gamma...
+		def set_AW_COLOR_colorManagement_nukeDefault():
+			nuke.Root().knob('colorManagement').setValue('Nuke')
+			nuke.Root().knob('OCIO_config').setValue('nuke-default')
+			nuke.Root().knob('monitorLut').setValue('sRGB')
+			nuke.Root().knob('int8Lut').setValue('sRGB')
+			nuke.Root().knob('int16Lut').setValue('sRGB')
+			nuke.Root().knob('logLut').setValue('Cineon')
+			nuke.Root().knob('floatLut').setValue('linear')
+			# Set the active Viewer to the monitorLUT value...
+			nuke.activeViewer().node().knob('viewerProcess').setValue('sRGB')
+			
+		# Add Node Graph right-click menus...
+		AW_COLOR_TOOLS = NODE_GRAPH.addMenu("AW Color")
+		AW_COLOR_TOOLS.addCommand("Deka_sRGB", "set_AW_COLOR_colorManagement_Deka_sRGB()")
+		AW_COLOR_TOOLS.addCommand("Deka_Adobe98", "set_AW_COLOR_colorManagement_Deka_Adobe98()")
+		AW_COLOR_TOOLS.addCommand("Legacy_sRGB", "set_AW_COLOR_colorManagement_Legacy_sRGB()")
+		AW_COLOR_TOOLS.addCommand("Legacy_Adobe98", "set_AW_COLOR_colorManagement_Legacy_Adobe98()")
+		AW_COLOR_TOOLS.addCommand("Nuke-default", "set_AW_COLOR_colorManagement_nukeDefault()")
+		
+		# Add Title Bar menus...
+		aw_color_menu_items = []
+		aw_color_menu_items.append(("AW Color/Deka_sRGB", "set_AW_COLOR_colorManagement_Deka_sRGB()"))
+		aw_color_menu_items.append(("AW Color/Deka_Adobe98", "set_AW_COLOR_colorManagement_Deka_Adobe98()"))
+		aw_color_menu_items.append(("AW Color/Legacy_sRGB", "set_AW_COLOR_colorManagement_Legacy_sRGB()"))
+		aw_color_menu_items.append(("AW Color/Legacy_Adobe98", "set_AW_COLOR_colorManagement_Legacy_Adobe98()"))
+		aw_color_menu_items.append(("AW Color/Nuke-default", "set_AW_COLOR_colorManagement_nukeDefault()"))
+		for name, choice in aw_color_menu_items:
+			nuke.menu('Nuke').addCommand(name, choice)
+except Exception:
+	print "ERROR: Unable to add the AW_COLOR_TOOLS menus!"
+	nuke.critical("Unable to add the AW_COLOR_TOOLS menus!")
+	
+##-------------------------------------------------------------------
+## Handy Web Links, including the AW Wiki...
+##-------------------------------------------------------------------
 import webbrowser
-
 urls = []
 urls.append(("Weblinks/AW Wiki", "http://wiki.armstrong-white.com/mediawiki/index.php/Main_Page"))
-urls.append(("Weblinks/Guidelines:Monitor Calibration", "http://wiki.armstrong-white.com/mediawiki/index.php/Guidelines:Monitor_Calibration"))
+urls.append(("Weblinks/Guidelines: Monitor Calibration", "http://wiki.armstrong-white.com/mediawiki/index.php/Guidelines:Monitor_Calibration"))
 urls.append(("Weblinks/Nukepedia", "http://nukepedia.com/"))
-
 for title, url in urls:
 	nuke.menu('Nuke').addCommand(title, "webbrowser.open('{url}')".format(url=url))
-
+##-------------------------------------------------------------------
 
 #Animation Graph Menu
 nuke.menu('Animation').addCommand('Bookend', "import Nuke_Scripts.KnobFns.bookend\nNuke_Scripts.KnobFns.bookend.bookend()")
@@ -90,6 +195,10 @@ try:
 except:
 	pass
 
+#### NOTE:
+#### This should go away when we roll out the AW Color Pipeline with Nuke 10.5v4.
+#### All of the sRGB ICC Profile previewing tools are built into the new system
+#### and accessed via the main menu, 'AW Color'...  RKB 10/11/17
 try:
 	os.sys.path.append(os.environ["NUKE_USER_TOOLS_DIR"])
 	import sRGB_Preview_Tools.Photoshop_sRGB_Preview_Tools
@@ -102,3 +211,4 @@ try:
 		toolbar.addCommand("sRGB Workflow", "sRGB_Preview_Tools.Photoshop_sRGB_Preview_Tools.start()", icon = os.path.join(os.environ['NUKE_USER_TOOLS_DIR'], "Rich", "sRGB_Preview_Tools", "sRGB_Icon.png"))  
 except:
 	pass
+##-------------------------------------------------------------------

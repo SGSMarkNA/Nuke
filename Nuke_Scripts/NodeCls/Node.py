@@ -14,11 +14,11 @@ class Node(nuke.Node):
 	def getNumKnobs(self):
 		"""self.numKnobs() -> The number of knobs. @return: The number of knobs."""
 		return super(Node).getNumKnobs()
-
+	
 	@property
-	def autoplace(self):
+	def Autoplace(self):
 		"""self.autoplace() -> None. Automatically place nodes, so they do not overlap. @return: None."""
-		return super(Node).autoplace()
+		return self.autoplace()
 
 	@property
 	def forceValidate(self):

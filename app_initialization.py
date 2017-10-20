@@ -3,6 +3,7 @@ import nuke
 import nukescripts
 from Environment_Access import System_Paths, System_Settings, utilities
 
+OCIO_CONFIG_FILE = System_Settings.OCIO_CONFIG_FILE
 
 
 if os.name == 'nt':
@@ -55,7 +56,7 @@ def get_and_set_environ_key_path(key, default, add_to_path=False, fource_default
 			res = _path_fixer(default)
 	elif fource_default:
 		res = _path_fixer(default)
-	
+
 	if add_to_path:
 		if os.path.exists(res) and not res in os.sys.path:
 			os.sys.path.append(res)
@@ -69,7 +70,7 @@ def Add_User_Tools_Packages_To_Path(folder):
 	for n in names:
 		path = os.path.join(r, n)
 		os.sys.path.append(path)
-		
+
 #----------------------------------------------------------------------
 # AW_BASE                = get_and_set_environ_key_path("AW_BASE", os.path.realpath(os.path.dirname(__file__)+"/.."), False, True)
 #----------------------------------------------------------------------
@@ -89,7 +90,7 @@ if nuke != None:
 	import Nuke_Scripts.Callbacks
 	Nuke_Scripts.SystemFns.paths.AddGizmo_Paths(System_Paths._CODE_NUKE_GIZMOS)
 	nuke.pluginAppendPath(System_Paths._CODE_NUKE_PLUGINS)
-	
+
 	## Geometry_Tools plugins...
 	if os.path.exists(System_Paths._CODE_NUKE_PLUGINS+"/geometry-1.1.544"):
 		if is_NT:
@@ -100,7 +101,7 @@ if nuke != None:
 			import geometry
 		except:
 			print "Did Not Import Geometry Plugins"
-			
+
 	## J_Ops plugins...
 	if os.path.exists(System_Paths._CODE_NUKE_PLUGINS+"/J_Ops_2.3v1_for_Nuke9.0"):
 		if is_NT:
@@ -125,7 +126,7 @@ if nuke != None:
 		nukescripts.addDropDataCallback(drag_drop_shotgun_shot)
 
 
-		
+
 '''
 Temporary fix for views_button bug in Nuke 9.0v7 -- 09/11/15 - RKB.
 BUG DESCRIPTION:
@@ -150,31 +151,59 @@ else:
 	pass
 
 
-## KNOB DEFAULTS: -----------------------------------------------------------
-
+##-------------------------------------------------------------------------
+## MISC. KNOB DEFAULTS:
+##-------------------------------------------------------------------------
 # Add default value to show what channels are actually being shuffled...
-
 nuke.knobDefault( 'Shuffle.label', '[value in]' )
 
-##  -------------------------------------------------------------------------
 
-
-
-
-##  -------------------------------------------------------------------------
+##-------------------------------------------------------------------------
 ##  WriteNodeMetadata --->> Adds Metadata Tab to all Write nodes!
 ##  Callbacks on tab for adding an ICC Profile to an image, adding XMP/IPTC creator
 ##  and contact info for Armstrong White. Required by Innocean/Hyundai client.
-##  -------------------------------------------------------------------------
-
+##-------------------------------------------------------------------------
 import sys
 modulename = 'WriteNodeMetadata'
 try:
-	os.sys.path.append('\\isln-smb\Git_Live_Code\Global_Systems\User_Tools\Nuke_User_Tools\Rich')
+	os.sys.path.append(os.environ['NUKE_USER_TOOLS_DIR'])
 	import Callbacks_WriteNodeMetadata
 	print 'Successfully imported the {} module.'.format(modulename)
 except:
 	if modulename not in sys.modules:
 		print 'You have not imported the {} module.'.format(modulename)
+##-------------------------------------------------------------------
 		
-##  -------------------------------------------------------------------------
+
+##-------------------------------------------------------------------
+##  OCIO / ACES Config knobDefaults for colorManagement
+##-------------------------------------------------------------------
+# Set which OCIO config file is to be used as the default for colorManagement...
+# NOTE: OCIO_CONFIG_FILE is set in System_Paths.py and System_Settings.py
+try:
+	# Determine whether to load an AW custom OCIO config file, based on the nuke version.
+	# Anything earlier than ver. 10.5 will load nuke-default.	
+	Major = nuke.NUKE_VERSION_MAJOR
+	Minor = nuke.NUKE_VERSION_MINOR
+	if Major == 10 and Minor >= 5:
+		if 'aw_Comp_config' in OCIO_CONFIG_FILE:
+			print "Using custom OCIO config 'aw_Comp_config' for colorManagement."
+			defaultConfig = OCIO_CONFIG_FILE.replace('\\', '/')
+			nuke.knobDefault('Root.colorManagement', 'OCIO')
+			nuke.knobDefault('Root.customOCIOConfigPath', defaultConfig)
+			nuke.knobDefault('Root.OCIO_config', 'custom')
+			nuke.knobDefault('Root.workingSpaceLUT', 'ACES - ACES2065-1')
+			nuke.knobDefault('Root.monitorLut', 'AW/Deka_Gamma_sRGB')
+			nuke.knobDefault('Root.int8Lut', 'Deka_Gamma')
+			nuke.knobDefault('Root.int16Lut', 'Deka_Gamma')
+			nuke.knobDefault('Root.logLut', 'ACES - ACES2065-1')
+			nuke.knobDefault('Root.floatLut', 'ACES - ACES2065-1')	
+		elif OCIO_CONFIG_FILE == 'nuke-default':
+			print "Using nuke-default OCIO config for colorManagement."
+	else:
+		# Just let the Nuke default color settings load for earlier releases...
+		print "Using nuke-default OCIO config for colorManagement."
+except Exception:
+	print "ERROR: Unable to load the OCIO config file!"
+	nuke.critical("Unable to load the OCIO config file!")
+##-------------------------------------------------------------------
