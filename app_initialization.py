@@ -1,3 +1,4 @@
+print "Running Nuke Init"
 import os
 import nuke
 import nukescripts
@@ -84,7 +85,8 @@ AW_NUKE_USER_TOOLS_DIR = utilities.get_and_set_environ_key("NUKE_USER_TOOLS_DIR"
 
 if os.path.exists(AW_NUKE_USER_TOOLS_DIR):
 	Add_User_Tools_Packages_To_Path(AW_NUKE_USER_TOOLS_DIR)
-
+else:
+	print "AW_NUKE_USER_TOOLS_DIR %r Did not exist" % AW_NUKE_USER_TOOLS_DIR
 if nuke != None:
 	import Nuke_Scripts.SystemFns.paths
 	import Nuke_Scripts.Callbacks
@@ -143,8 +145,9 @@ def Set_ViewsButton_On():
 
 # Check for Nuke 9.0v7 release...
 Major = nuke.NUKE_VERSION_MAJOR 
+Minor = nuke.NUKE_VERSION_MINOR
 Release = nuke.NUKE_VERSION_RELEASE 
-if Major == 9 and Release == 7:
+if Major == 9 and Minor == 0 and Release == 7:
 	nuke.addOnScriptLoad(Set_ViewsButton_On, (), {}, "Root")
 	nuke.addOnScriptSave(Set_ViewsButton_On, (), {}, "Root")	
 else:
@@ -156,6 +159,23 @@ else:
 ##-------------------------------------------------------------------------
 # Add default value to show what channels are actually being shuffled...
 nuke.knobDefault( 'Shuffle.label', '[value in]' )
+
+
+##-------------------------------------------------------------------------
+## Add Write Node knobDefault for automatically creating missing directories...
+## Also, turns on the button for any older scripts (pre-10.5v4)...
+##-------------------------------------------------------------------------
+Major = nuke.NUKE_VERSION_MAJOR
+if Major >= 10:
+	import sys
+	modulename = 'Callback_WriteNode_create_directories_ON'
+	try:
+		os.sys.path.append(os.environ['NUKE_USER_TOOLS_DIR'])
+		import Callback_WriteNode_create_directories_ON
+		print 'Successfully imported the {} module.'.format(modulename)
+	except:
+		if modulename not in sys.modules:
+			print 'You have not imported the {} module.'.format(modulename)	
 
 
 ##-------------------------------------------------------------------------
@@ -173,7 +193,7 @@ except:
 	if modulename not in sys.modules:
 		print 'You have not imported the {} module.'.format(modulename)
 ##-------------------------------------------------------------------
-		
+
 
 ##-------------------------------------------------------------------
 ##  OCIO / ACES Config knobDefaults for colorManagement
@@ -184,8 +204,7 @@ try:
 	# Determine whether to load an AW custom OCIO config file, based on the nuke version.
 	# Anything earlier than ver. 10.5 will load nuke-default.	
 	Major = nuke.NUKE_VERSION_MAJOR
-	Minor = nuke.NUKE_VERSION_MINOR
-	if Major == 10 and Minor >= 5:
+	if Major >= 10:
 		if 'aw_Comp_config' in OCIO_CONFIG_FILE:
 			print "Using custom OCIO config 'aw_Comp_config' for colorManagement."
 			defaultConfig = OCIO_CONFIG_FILE.replace('\\', '/')
