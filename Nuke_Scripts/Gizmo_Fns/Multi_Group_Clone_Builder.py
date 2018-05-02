@@ -2,11 +2,11 @@ import nuke
 import os
 from _nukemath import Vector2 as VEC2
 from functools import wraps
-clear_selection  = lambda : not all([node.setSelected(False) for node in nuke.selectedNodes()])
+clear_selection  = lambda : not all([node.setSelected(False) for node in nuke.allNodes()])
 delete_nodes     = lambda node_list: [nuke.delete(node) for node in node_list]
 Select_Replace_Nodes   = lambda node_list:[node.setSelected( node in node_list ) for node in nuke.allNodes()]
 Find_Cloned_Groups = lambda id_tag_value: [n for n in [n for n in nuke.allNodes("Group") if n.knobs().has_key("clone_id_tag")] if int(n.knob("clone_id_tag").value()) == id_tag_value]
-_Global_UnClonable_Node_Types = ["Roto","RotoPaint","Group"]
+_Global_UnClonable_Node_Types = ["Roto","RotoPaint","Group","Dot"]
 #===============================================================================
 def find_upstream_node( matchclass=None, startnode=None ):
 	"""
@@ -206,9 +206,9 @@ def Rebuild_None_Cloneable_Nodes(master_node,clone_group):
 	
 	nodes_to_dup = Get_Nodes_To_Duplicate(master_node)	
 	if len(nodes_to_dup):		
-		#Select_Replace_Nodes(nodes_to_dup)
-		#nuke.nodeCopy('%clipboard%')
-		#clear_selection()
+		Select_Replace_Nodes(nodes_to_dup)
+		nuke.nodeCopy('%clipboard%')
+		clear_selection()
 		#for node in nodes_to_dup:
 			#cloned_version = clone_group.node(node.name())
 			#if cloned_version is not None:
@@ -216,18 +216,12 @@ def Rebuild_None_Cloneable_Nodes(master_node,clone_group):
 					#values = placement_dict[cloned_version.name()]
 					#cloned_version.setXYpos(values[0],values[1])
 		
-		#with clone_group:
-			#clear_selection()
-			#nuke.nodePaste('%clipboard%')
-			#clear_selection()
+		with clone_group:
+			clear_selection()
+			nuke.nodePaste('%clipboard%')
+			clear_selection()
 			
 		for real_node in nodes_to_dup:
-			Select_Replace_Nodes([real_node])
-			nuke.nodeCopy('%clipboard%')
-			with clone_group:
-				clear_selection()
-				nuke.nodePaste('%clipboard%')
-				clear_selection()
 			cloned_version = clone_group.node(real_node.name())
 			connect_clone_from_real(real_node,cloned_version,clone_group)
 #----------------------------------------------------------------------
@@ -238,7 +232,7 @@ def Rebuild_Global_Correction_Node_Group(master_node,clone_group):
 
 	with clone_group:
 		nuke.nodePaste("%clipboard%")
-
+		clear_selection()
 	master_node_start  = master_node.dependent()[0].name()
 	start_node = [n for n in clone_group.nodes() if n.name() == master_node_start][0]
 	master_node_end = master_node.knobs()["Assigned_Clone_Stop_Link"].getLink().replace(".name","")
@@ -289,10 +283,12 @@ def make_Global_Correction_Groups(master_node):
 	Set_Clone_Clipboard(master_node)
 	for node in selected_nodes:
 		if not node == master_node:
+			Set_Clone_Clipboard(master_node)
 			clone_group = make_Global_Correction_Node_Group(master_node)
-			Rebuild_None_Cloneable_Nodes(master_node,clone_group)
 			assign_Clone_Group_To_Node(clone_group,node,master_node)
+			Rebuild_None_Cloneable_Nodes(master_node,clone_group)
 			apply_clone_placement(master_node, clone_group)
+			clear_selection()
 #----------------------------------------------------------------------
 def Rebuild_Global_Correction_Groups(master_node,only_Non_Cloneable=False):
 	with nuke.root():
@@ -300,6 +296,7 @@ def Rebuild_Global_Correction_Groups(master_node,only_Non_Cloneable=False):
 	Set_Clone_Clipboard(master_node)
 	for clone_group in clone_groups:
 		if not clone_group == master_node:
+			Set_Clone_Clipboard(master_node)
 			if not only_Non_Cloneable:
 				Clear_Global_Correction_Node_Group(clone_group)
 				Rebuild_Global_Correction_Node_Group(master_node,clone_group)

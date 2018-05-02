@@ -66,6 +66,26 @@ class Multi_Group_Clone_Controls(Gizmo_UI_Widgets.UI_Base_Widget_Knob):
 
 	## INTEGRITY CHECK
 	#----------------------------------------------------------------------
+	def is_First_Input_Valid(self):
+		""""""
+		first_input = self._nuke_node.dependent()
+		if len(first_input):
+			first_input = first_input[0]
+			if not first_input.Class() == "Dot":
+				return True
+			else:
+				return False
+		else:
+			return False
+		link = clone_stop.getLink()
+		if link is None or link == "":
+			return False
+		else:
+			if nuke.exists(link.replace(".name","")):
+				return True
+			else:
+				return False
+	#----------------------------------------------------------------------
 	def is_Stop_Node_Valid(self):
 		""""""
 		clone_stop = self._nuke_node.knobs()["Assigned_Clone_Stop_Link"]
@@ -121,6 +141,10 @@ class Multi_Group_Clone_Controls(Gizmo_UI_Widgets.UI_Base_Widget_Knob):
 		""""""
 		nuke.message("Can Not Preform Action Because The Node Stop Is Not Within The Pipe Tree Of the Master Control Node")
 	#----------------------------------------------------------------------
+	def _error_message_first_input(self):
+		""""""
+		nuke.message("Can Not Preform Action Because The First Input Of The Master Control Node Can Not Be A Dot Node")
+	#----------------------------------------------------------------------
 	def get_Stop_Node_Nuke_Node(self):
 		""""""
 		clone_stop = self._nuke_node.knobs()["Assigned_Clone_Stop_Link"]
@@ -138,32 +162,42 @@ class Multi_Group_Clone_Controls(Gizmo_UI_Widgets.UI_Base_Widget_Knob):
 	#----------------------------------------------------------------------
 	@Gizmo_UI_Widgets.PYQT.Slot()
 	def Select_Clones(self):
+		reload(Multi_Group_Clone_Builder)
 		Multi_Group_Clone_Builder.Select_Global_Correction_Groups(self._nuke_node)
 	#----------------------------------------------------------------------
 	@Gizmo_UI_Widgets.PYQT.Slot()
 	def Rebuild_Global_Correction_Groups(self):
+		reload(Multi_Group_Clone_Builder)
 		if not self.is_Stop_Node_Valid():
 			self._error_message_stop_node_does_not_exist()
 		elif not self.is_Stop_Node_In_Pipe_Tree():
 			self._error_message_stop_node_not_in_pipe_tree()
+		elif not self.is_First_Input_Valid():
+			self._error_message_first_input()
 		else:
 			Multi_Group_Clone_Builder.Rebuild_Global_Correction_Groups(self._nuke_node)
 	#----------------------------------------------------------------------
 	@Gizmo_UI_Widgets.PYQT.Slot()
 	def Rebuild_Non_Cloneable(self):
+		reload(Multi_Group_Clone_Builder)
 		if not self.is_Stop_Node_Valid():
 			self._error_message_stop_node_does_not_exist()
 		elif not self.is_Stop_Node_In_Pipe_Tree():
 			self._error_message_stop_node_not_in_pipe_tree()
+		elif not self.is_First_Input_Valid():
+			self._error_message_first_input()
 		else:
 			Multi_Group_Clone_Builder.Rebuild_Global_Correction_Groups(self._nuke_node,True)
 		
 	#----------------------------------------------------------------------
 	@Gizmo_UI_Widgets.PYQT.Slot()
 	def make_Global_Correction_Groups(self):
+		reload(Multi_Group_Clone_Builder)
 		if not self.is_Stop_Node_Valid():
 			self._error_message_stop_node_does_not_exist()
 		elif not self.is_Stop_Node_In_Pipe_Tree():
 			self._error_message_stop_node_not_in_pipe_tree()
+		elif not self.is_First_Input_Valid():
+			self._error_message_first_input()
 		else:
 			Multi_Group_Clone_Builder.make_Global_Correction_Groups(self._nuke_node)
