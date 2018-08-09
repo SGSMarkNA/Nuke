@@ -71,33 +71,33 @@ try:
 		# Nuke uses forward slashes...
 		ConfigFile = OCIO_CONFIG_FILE.replace('\\', '/')
 		
-		# Set Deka color workflow OCIO configuration settings with sRGB preview...
-		def set_AW_COLOR_colorManagement_Deka_sRGB():
+		# Set Delta color workflow OCIO configuration settings with sRGB preview...
+		def set_AW_COLOR_colorManagement_Delta_sRGB():
 			nuke.Root().knob('colorManagement').setValue('OCIO')
 			nuke.Root().knob('customOCIOConfigPath').setValue(ConfigFile)
 			nuke.Root().knob('OCIO_config').setValue('custom')
 			nuke.Root().knob('workingSpaceLUT').setValue('ACES/ACES - ACES2065-1')
-			nuke.Root().knob('monitorLut').setValue('AW/Deka_Gamma_sRGB')
-			nuke.Root().knob('int8Lut').setValue('AW/Deka_Gamma')
-			nuke.Root().knob('int16Lut').setValue('AW/Deka_Gamma')
+			nuke.Root().knob('monitorLut').setValue('AW/Delta_Gamma_sRGB')
+			nuke.Root().knob('int8Lut').setValue('AW/Delta_Gamma')
+			nuke.Root().knob('int16Lut').setValue('AW/Delta_Gamma')
 			nuke.Root().knob('logLut').setValue('ACES/ACES - ACES2065-1')
 			nuke.Root().knob('floatLut').setValue('ACES/ACES - ACES2065-1')
 			# Set the active Viewer to the monitorLUT value...
-			nuke.activeViewer().node().knob('viewerProcess').setValue('Deka_Gamma_sRGB')
+			nuke.activeViewer().node().knob('viewerProcess').setValue('Delta_Gamma_sRGB')
 			
-		# Set Deka color workflow OCIO configuration settings with AdobeRGB(1998) preview...
-		def set_AW_COLOR_colorManagement_Deka_Adobe98():
+		# Set Delta color workflow OCIO configuration settings with AdobeRGB(1998) preview...
+		def set_AW_COLOR_colorManagement_Delta_Adobe98():
 			nuke.Root().knob('colorManagement').setValue('OCIO')
 			nuke.Root().knob('customOCIOConfigPath').setValue(ConfigFile)
 			nuke.Root().knob('OCIO_config').setValue('custom')
 			nuke.Root().knob('workingSpaceLUT').setValue('ACES/ACES - ACES2065-1')
-			nuke.Root().knob('monitorLut').setValue('AW/Deka_Gamma_Adobe98')
-			nuke.Root().knob('int8Lut').setValue('AW/Deka_Gamma')
-			nuke.Root().knob('int16Lut').setValue('AW/Deka_Gamma')
+			nuke.Root().knob('monitorLut').setValue('AW/Delta_Gamma_Adobe98')
+			nuke.Root().knob('int8Lut').setValue('AW/Delta_Gamma')
+			nuke.Root().knob('int16Lut').setValue('AW/Delta_Gamma')
 			nuke.Root().knob('logLut').setValue('ACES/ACES - ACES2065-1')
 			nuke.Root().knob('floatLut').setValue('ACES/ACES - ACES2065-1')
 			# Set the active Viewer to the monitorLUT value...
-			nuke.activeViewer().node().knob('viewerProcess').setValue('Deka_Gamma_Adobe98')
+			nuke.activeViewer().node().knob('viewerProcess').setValue('Delta_Gamma_Adobe98')
 		
 		# Set Legacy/Linear color workflow OCIO configuration settings with sRGB preview...
 		def set_AW_COLOR_colorManagement_Legacy_sRGB():
@@ -141,16 +141,16 @@ try:
 			
 		# Add Node Graph right-click menus...
 		AW_COLOR_TOOLS = NODE_GRAPH.addMenu("AW Color")
-		AW_COLOR_TOOLS.addCommand("Deka_sRGB", "set_AW_COLOR_colorManagement_Deka_sRGB()")
-		AW_COLOR_TOOLS.addCommand("Deka_Adobe98", "set_AW_COLOR_colorManagement_Deka_Adobe98()")
+		#AW_COLOR_TOOLS.addCommand("Delta_sRGB", "set_AW_COLOR_colorManagement_Delta_sRGB()")
+		#AW_COLOR_TOOLS.addCommand("Delta_Adobe98", "set_AW_COLOR_colorManagement_Delta_Adobe98()")
 		AW_COLOR_TOOLS.addCommand("Legacy_sRGB", "set_AW_COLOR_colorManagement_Legacy_sRGB()")
 		AW_COLOR_TOOLS.addCommand("Legacy_Adobe98", "set_AW_COLOR_colorManagement_Legacy_Adobe98()")
 		AW_COLOR_TOOLS.addCommand("Nuke-default", "set_AW_COLOR_colorManagement_nukeDefault()")
 		
 		# Add Title Bar menus...
 		aw_color_menu_items = []
-		aw_color_menu_items.append(("AW Color/Deka_sRGB", "set_AW_COLOR_colorManagement_Deka_sRGB()"))
-		aw_color_menu_items.append(("AW Color/Deka_Adobe98", "set_AW_COLOR_colorManagement_Deka_Adobe98()"))
+		#aw_color_menu_items.append(("AW Color/Delta_sRGB", "set_AW_COLOR_colorManagement_Delta_sRGB()"))
+		#aw_color_menu_items.append(("AW Color/Delta_Adobe98", "set_AW_COLOR_colorManagement_Delta_Adobe98()"))
 		aw_color_menu_items.append(("AW Color/Legacy_sRGB", "set_AW_COLOR_colorManagement_Legacy_sRGB()"))
 		aw_color_menu_items.append(("AW Color/Legacy_Adobe98", "set_AW_COLOR_colorManagement_Legacy_Adobe98()"))
 		aw_color_menu_items.append(("AW Color/Nuke-default", "set_AW_COLOR_colorManagement_nukeDefault()"))
@@ -159,6 +159,7 @@ try:
 except Exception:
 	print "ERROR: Unable to add the AW_COLOR_TOOLS menus!"
 	nuke.critical("Unable to add the AW_COLOR_TOOLS menus!")
+
 	
 ##-------------------------------------------------------------------
 ## Handy Web Links, including the AW Wiki...
@@ -167,6 +168,7 @@ import webbrowser
 urls = []
 urls.append(("Weblinks/AW Wiki", "http://wiki.armstrong-white.com/mediawiki/index.php/Main_Page"))
 urls.append(("Weblinks/Guidelines: Monitor Calibration", "http://wiki.armstrong-white.com/mediawiki/index.php/Guidelines:Monitor_Calibration"))
+urls.append(("Weblinks/Guidelines: Working With Views", "http://wiki.armstrong-white.com/mediawiki/index.php/Dept:Compositing_Nuke_Working_With_Views"))
 urls.append(("Weblinks/Nukepedia", "http://nukepedia.com/"))
 for title, url in urls:
 	nuke.menu('Nuke').addCommand(title, "webbrowser.open('{url}')".format(url=url))
@@ -194,22 +196,26 @@ try:
 except:
 	pass
 
+##-------------------------------------------------------------------
 #### NOTE:
-#### This should go away when we roll out the AW Color Pipeline with Nuke 10.5v4.
 #### All of the sRGB ICC Profile previewing tools are built into the new system
 #### and accessed via the main menu, 'AW Color'...  RKB 10/11/17
+
+#### UPDATE:
+#### New Reinhard Viewer Process node - RKB 06/01/18 
 try:
 	os.sys.path.append(os.environ["NUKE_USER_TOOLS_DIR"])
-	import sRGB_Preview_Tools.Photoshop_sRGB_Preview_Tools
+	import Reinhard_Preview_Tools.Photoshop_Reinhard_Preview_Tools
 	# Add button to Nuke Toolbar
 	if os.name == 'nt':
 		toolbar = nuke.toolbar("Nodes")
-		toolbar.addCommand("sRGB Workflow", "sRGB_Preview_Tools.Photoshop_sRGB_Preview_Tools.start()", icon = os.path.join(os.environ['NUKE_USER_TOOLS_DIR'], "Rich", "sRGB_Preview_Tools", "sRGB_Icon.png").replace('\\', '/'))
+		toolbar.addCommand("Reinhard Workflow", "Reinhard_Preview_Tools.Photoshop_Reinhard_Preview_Tools.start()", icon = os.path.join(os.environ['NUKE_USER_TOOLS_DIR'], "Rich", "Reinhard_Preview_Tools", "Reinhard_ICON_24px.png").replace('\\', '/'))
 	elif os.name =='posix':
 		toolbar = nuke.toolbar("Nodes")
-		toolbar.addCommand("sRGB Workflow", "sRGB_Preview_Tools.Photoshop_sRGB_Preview_Tools.start()", icon = os.path.join(os.environ['NUKE_USER_TOOLS_DIR'], "Rich", "sRGB_Preview_Tools", "sRGB_Icon.png"))  
+		toolbar.addCommand("Reinhard Workflow", "Reinhard_Preview_Tools.Photoshop_Reinhard_Preview_Tools.start()", icon = os.path.join(os.environ['NUKE_USER_TOOLS_DIR'], "Rich", "Reinhard_Preview_Tools", "Reinhard_ICON_24px.png"))  
 except:
 	pass
+
 ##-------------------------------------------------------------------
 #### NOTE:
 #### Added Back In Nuke Will Now Generate The Gizmos Menu At Startup
