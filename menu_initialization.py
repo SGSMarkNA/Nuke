@@ -189,6 +189,12 @@ except:
 	print "Did Not Import J_Ops Menu"
 
 try:
+	import cryptomatte_utilities
+	cryptomatte_utilities.setup_cryptomatte_ui()
+except:
+	print "Did Not Import cryptomatte Menu"
+
+try:
 	#os.sys.path.append(os.environ["USER_TOOLS_DIR"])
 	os.sys.path.append(os.environ["NUKE_USER_TOOLS_DIR"])
 	import UserTools

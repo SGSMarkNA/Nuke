@@ -1,0 +1,3 @@
+[submodule "Plugins/Cryptomatte"]
+	path = Plugins/Cryptomatte
+	url = https://github.com/Psyop/Cryptomatte.git

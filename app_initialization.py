@@ -3,6 +3,13 @@ import os
 import nuke
 import nukescripts
 
+if os.environ['USE_WING_DEBUG'] == "1":
+	try:
+		import wingdbstub
+	except:
+		pass
+
+
 # from Environment_Access import System_Paths, System_Settings, utilities
 try:
 	from Environment_Access import System_Paths, System_Settings, utilities
@@ -124,7 +131,18 @@ if nuke != None:
 			import J_Ops
 		except ImportError:
 			print "Did Not Import J_Ops Plugins"
-
+	
+	## Cryptomatte plugins...
+	if os.path.exists(System_Paths._CODE_NUKE_PLUGINS+"/Cryptomatte"):
+		nuke.pluginAppendPath(System_Paths._CODE_NUKE_PLUGINS+"/Cryptomatte/nuke")
+		nuke.pluginAddPath(System_Paths._CODE_NUKE_PLUGINS+"/Cryptomatte/nuke")
+		os.sys.path.append(System_Paths._CODE_NUKE_PLUGINS+"/Cryptomatte/nuke")
+		try:
+			import cryptomatte_utilities
+			cryptomatte_utilities.setup_cryptomatte()
+		except ImportError:
+			print "Did Not Import Cryptomatte Plugins"
+	
 	if nuke.GUI:
 		## Revamped threaded localise function from Frank Rueter...
 		## Replaces the nuke.localise method...
