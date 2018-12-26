@@ -2,12 +2,12 @@ print "Running Nuke Init"
 import os
 import nuke
 import nukescripts
-
-if os.environ['USE_WING_DEBUG'] == "1":
-	try:
-		import wingdbstub
-	except:
-		pass
+if os.environ.has_key('USE_WING_DEBUG'):
+	if os.environ['USE_WING_DEBUG'] == "1":
+		try:
+			import wingdbstub
+		except:
+			pass
 
 
 # from Environment_Access import System_Paths, System_Settings, utilities
@@ -25,11 +25,6 @@ if os.name == 'nt':
 else:
 	is_NT = False
 os.environ["QT_PACKAGE"] = "PySide"
-if System_Settings.USE_WING_DEBUG:
-	try:
-		import wingdbstub
-	except:
-		pass
 
 
 def drag_drop_shotgun_shot(mimeType, text):
