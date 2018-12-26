@@ -2,7 +2,8 @@ import glob
 import os
 import re
 import platform
-name_num_ext_pattern = re.compile("(?P<name>\w+)(\W)(?P<number>[0-9]+)(\W)(?P<ext>\w+)")
+import shutil
+name_num_ext_pattern = re.compile(r"(?P<name>[A-Za-z_]+)(?P<number>[0-9]+)(\W)(?P<ext>\w+)")
 
 #----------------------------------------------------------------------
 def Assine_Version_Frame_Data(filename):
@@ -158,28 +159,38 @@ def construct_image_seq_dict(path,as_Nuke_Knobs=False,as_tcl=False):
 		return knob_values
 	
 	else:
-		return dict(file    = file_knob ,
-		            folder  = folder_name,
-		            name    = name,
-		            ext     = ext,
-		            last    = end_knob  ,
-		            first   = start_knob,
-		            count   = file_count,
-		            paths   = matching_paths,
-		            padding = padding)
+		res = file_sequence()
+		res.file_count   = file_count
+		res.file_ext     = ext
+		res.file_expr    = file_knob
+		res.folder_path  = folder_name
+		res.file_padding = padding
+		res.file_paths   = matching_paths
+		res.file_name    = name
+		res.last_frame   = end_knob
+		res.first_frame  = start_knob
+		return res
 		
 
 	
 class file_sequence(object):
 	def __init__(self):
-		
+		self.file_name    = ""
 		self.file_count   = 0
 		self.file_padding = 0
 		self.file_ext     = ""
 		self.last_frame   = 0
 		self.first_frame  = 0
-		self.seq_name     = ''
 		self.file_expr    = ''
-		self.file_paths   = ''
+		self.file_paths   = []
 		self.folder_path  = ''
-	
+	#----------------------------------------------------------------------
+	def reverse_Seq(self):
+		""""""
+		dest_folder = os.path.join(self.folder_path,"Reversed")
+		if not os.path.exists(dest_folder):
+			os.makedirs(dest_folder)
+		reversed_paths = [os.path.join(dest_folder,os.path.basename(item)) for item in reversed(self.file_paths)]
+		
+		for src,dest in zip(self.file_paths,reversed_paths):
+			shutil.copyfile(src, dest)
