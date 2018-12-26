@@ -2,7 +2,13 @@ print "Running Nuke Init"
 import os
 import nuke
 import nukescripts
-from Environment_Access import System_Paths, System_Settings, utilities
+
+# from Environment_Access import System_Paths, System_Settings, utilities
+try:
+	from Environment_Access import System_Paths, System_Settings, utilities
+except:
+	os.sys.path.append("//isln-smb.ad.sgsco.int/aw_config/Git_Live_Code/Global_Systems")
+	from Environment_Access import System_Paths, System_Settings, utilities
 
 OCIO_CONFIG_FILE = System_Settings.OCIO_CONFIG_FILE
 
@@ -175,7 +181,7 @@ if Major >= 10:
 		print 'Successfully imported the {} module.'.format(modulename)
 	except:
 		if modulename not in sys.modules:
-			print 'You have not imported the {} module.'.format(modulename)	
+			print 'ERROR: Unable to load the {} module.'.format(modulename)	
 
 
 ##-------------------------------------------------------------------------
@@ -191,7 +197,7 @@ try:
 	print 'Successfully imported the {} module.'.format(modulename)
 except:
 	if modulename not in sys.modules:
-		print 'You have not imported the {} module.'.format(modulename)
+		print 'ERROR: Unable to load the {} module.'.format(modulename)
 ##-------------------------------------------------------------------
 
 

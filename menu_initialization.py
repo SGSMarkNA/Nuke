@@ -226,3 +226,9 @@ except:
 	pass
 AW_ASSET_ASSEMBLY_SYSTEM_MENU = nuke.menu("Nuke").addMenu("Asset Assembly System")
 AW_ASSET_ASSEMBLY_SYSTEM_MENU.addCommand("Initialize System","if not os.path.join(System_Paths.AW_COMMON_UTILITIES,'Other') in os.sys.path:\n\tos.sys.path.append(os.path.join(System_Paths.AW_COMMON_UTILITIES,'Other'))\nimport AW_Asset_Assembly_System.Simple_Main_Window\nprop_pan = nuke.getPaneFor('Properties.1')\nAW_Asset_Assembly_System.Simple_Main_Window.Global_Nuke_Pan.addToPane(prop_pan)")
+
+
+##-------------------------------------------------------------------
+#### Add Hotkey to create a new Shuffle node in the Node Graph...
+nuke.menu('Nodes').addCommand('@;Shuffle', 'nuke.createNode(\'Shuffle\')', 'h', shortcutContext=2)
+nuke.menu('Nodes').addCommand('@;ShuffleBranch', 'nuke.createNode(\'Shuffle\')', '+h', shortcutContext=2)
