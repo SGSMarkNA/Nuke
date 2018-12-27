@@ -195,6 +195,13 @@ except:
 	print "Did Not Import cryptomatte Menu"
 
 try:
+	menu = nuke.menu('Nodes')
+	subMenu = menu.addMenu("V-Ray Tools", icon = "VRayTools.png")
+	subMenu.addCommand('VRayDenoiser', 'nuke.createNode("VRayDenoiser")', icon = "VRayDenoiser.png")
+except:
+	print "Did Not create V-Ray Menu"
+	
+try:
 	#os.sys.path.append(os.environ["USER_TOOLS_DIR"])
 	os.sys.path.append(os.environ["NUKE_USER_TOOLS_DIR"])
 	import UserTools

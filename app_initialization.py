@@ -137,6 +137,10 @@ if nuke != None:
 			cryptomatte_utilities.setup_cryptomatte()
 		except ImportError:
 			print "Did Not Import Cryptomatte Plugins"
+			
+	## VRayDenoiser plugins...
+	if os.path.exists(System_Paths._CODE_NUKE_PLUGINS+"/VRayDenoiser"):
+		nuke.pluginAppendPath(System_Paths._CODE_NUKE_PLUGINS+"/VRayDenoiser")
 	
 	if nuke.GUI:
 		## Revamped threaded localise function from Frank Rueter...
