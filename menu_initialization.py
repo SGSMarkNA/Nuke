@@ -266,8 +266,12 @@ try:
 except:
 	pass
 
+try:
+	from DML_Tools.menu import *
+except:
+	print "Could Not Import DML_Tools menu"
 
-Gimp_menu = AW_TOOLS_MENU.addMenu("Gimped To PSD Nodes")
-Gimp_menu.addCommand("Master Layer Order",'nuke.createNode("DML_Master_Layer_Order")')
-Gimp_menu.addCommand("Layers To PSD",'nuke.createNode("DML_Layers_To_Gimped_PSD")')
-Gimp_menu.addCommand("Layer Order Builder",'nuke.createNode("DML_Layer_Order_Builder")')
+#Gimp_menu = AW_TOOLS_MENU.addMenu("Gimped To PSD Nodes")
+#Gimp_menu.addCommand("Master Layer Order",'nuke.createNode("DML_Master_Layer_Order")')
+#Gimp_menu.addCommand("Layers To PSD",'nuke.createNode("DML_Layers_To_Gimped_PSD")')
+#Gimp_menu.addCommand("Layer Order Builder",'nuke.createNode("DML_Layer_Order_Builder")')
