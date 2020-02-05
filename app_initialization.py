@@ -267,3 +267,9 @@ except Exception:
 	print "ERROR: Unable to load the OCIO config file!"
 	nuke.critical("Unable to load the OCIO config file!")
 ##-------------------------------------------------------------------
+try:
+	import DML_Tools
+except:
+	print "Could Not import Dml_Tools"
+	pass
+##-------------------------------------------------------------------

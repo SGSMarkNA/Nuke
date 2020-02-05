@@ -2,6 +2,18 @@ import nuke
 import nukescripts
 import os
 
+# Closes all property boxes at once (especially useful if you like to use floating windows).
+def CloseAllProperties():
+	
+	# for each node, even the ones in groups
+	for n in nuke.allNodes(recurseGroups=True):
+
+		# hide the control panel
+		n.hideControlPanel()
+
+	nuke.root().hideControlPanel()
+
+
 def aw_rename():
 	n = nuke.selectedNode()
 	new_name = nuke.getInput('Rename {0} to:'.format(n.name()))
@@ -22,6 +34,7 @@ AW_TOOLS_MENU = nuke.menu("Nuke").addMenu("AW Tools")
 # AW_TOOLS_MENU.addCommand("Load User Tools"              ,"import UserTools\nUserTools.pythonScripts()" )
 AW_TOOLS_MENU.addCommand("Generate Gizmo Menu"                  ,"import Nuke_Scripts.SystemFns.paths\nNuke_Scripts.SystemFns.paths.generate_Gizmo_Menu()")
 AW_TOOLS_MENU.addSeparator()
+AW_TOOLS_MENU.addCommand('Close All Properties', "CloseAllProperties()", "\\") # two backslashes necessary to write one, as it is an escape character
 
 AW_TOOLS_MENU.addCommand("Create Side Dots"                   ,"import Nuke_Scripts.NodeFns.dots\nNuke_Scripts.NodeFns.dots.create_Side_Dots()")
 AW_TOOLS_MENU.addCommand("One View To Join Connect"           ,"import Nuke_Scripts.ViewFns.joinview_connecter\nNuke_Scripts.ViewFns.joinview_connecter.connect_oneviews_to_joinview()")
@@ -245,3 +258,16 @@ AW_ASSET_ASSEMBLY_SYSTEM_MENU.addCommand("Initialize System","if not os.path.joi
 #### Add Hotkey to create a new Shuffle node in the Node Graph...
 nuke.menu('Nodes').addCommand('@;Shuffle', 'nuke.createNode(\'Shuffle\')', 'h', shortcutContext=2)
 nuke.menu('Nodes').addCommand('@;ShuffleBranch', 'nuke.createNode(\'Shuffle\')', '+h', shortcutContext=2)
+
+
+try:
+	import Nuke_Scripts.ChannelFns.channel_hotbox
+	nuke.menu("Nuke").findItem("Edit").addCommand("HotBox", 'Nuke_Scripts.ChannelFns.channel_hotbox.start()', "alt+q")
+except:
+	pass
+
+
+Gimp_menu = AW_TOOLS_MENU.addMenu("Gimped To PSD Nodes")
+Gimp_menu.addCommand("Master Layer Order",'nuke.createNode("DML_Master_Layer_Order")')
+Gimp_menu.addCommand("Layers To PSD",'nuke.createNode("DML_Layers_To_Gimped_PSD")')
+Gimp_menu.addCommand("Layer Order Builder",'nuke.createNode("DML_Layer_Order_Builder")')
