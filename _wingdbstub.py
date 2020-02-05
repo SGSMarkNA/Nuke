@@ -92,7 +92,7 @@ kLogVeryVerbose = 0
 # and the environment variable WINGDB_ACTIVE is unset before importing
 # this module in the second or later Python instance.  See the Wing
 # IDE manual for details.
-kEmbedded = 1
+kEmbedded = 0
 
 # Path to search for the debug password file and the name of the file
 # to use.  The password file contains the encryption type and connect 
