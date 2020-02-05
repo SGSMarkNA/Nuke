@@ -10,7 +10,7 @@ def recursiveFindNodes(nodeClass, startNode):
 		yield startNode
 	elif isinstance(startNode, nuke.Group):
 		for child in startNode.nodes():
-			for foundNode in RecursiveFindNodes(nodeClass, child):
+			for foundNode in recursiveFindNodes(nodeClass, child):
 				yield foundNode
 
 def orphan_nodes():
