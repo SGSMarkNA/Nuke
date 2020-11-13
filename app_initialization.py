@@ -95,12 +95,15 @@ if os.path.exists(AW_NUKE_USER_TOOLS_DIR):
 	Add_User_Tools_Packages_To_Path(AW_NUKE_USER_TOOLS_DIR)
 else:
 	print "AW_NUKE_USER_TOOLS_DIR %r Did not exist" % AW_NUKE_USER_TOOLS_DIR
+	
 if nuke != None:
+	# Get the current version of nuke
+	Major = nuke.NUKE_VERSION_MAJOR
 	import Nuke_Scripts.SystemFns.paths
 	import Nuke_Scripts.Callbacks
 	Nuke_Scripts.SystemFns.paths.AddGizmo_Paths(System_Paths._CODE_NUKE_GIZMOS)
 	nuke.pluginAppendPath(System_Paths._CODE_NUKE_PLUGINS)
-
+	
 	## Geometry_Tools plugins...
 	if os.path.exists(System_Paths._CODE_NUKE_PLUGINS+"/geometry-1.1.544"):
 		if is_NT:
@@ -112,20 +115,23 @@ if nuke != None:
 		except:
 			print "Did Not Import Geometry Plugins"
 
-	## J_Ops plugins...
-	if os.path.exists(System_Paths._CODE_NUKE_PLUGINS+"/J_Ops_2.3v1_for_Nuke9.0"):
-		if is_NT:
-			nuke.pluginAppendPath(System_Paths._CODE_NUKE_PLUGINS+"/J_Ops_2.3v1_for_Nuke9.0/Win/J_Ops/py")
-			nuke.pluginAddPath(System_Paths._CODE_NUKE_PLUGINS+"/J_Ops_2.3v1_for_Nuke9.0/Win/J_Ops/ndk")
-			nuke.pluginAddPath(System_Paths._CODE_NUKE_PLUGINS+"/J_Ops_2.3v1_for_Nuke9.0/Win/J_Ops/icons")
-		else:
-			nuke.pluginAppendPath(System_Paths._CODE_NUKE_PLUGINS+"/J_Ops_2.3v1_for_Nuke9.0/Mac/J_Ops/py")
-			nuke.pluginAddPath(System_Paths._CODE_NUKE_PLUGINS+"/J_Ops_2.3v1_for_Nuke9.0/Mac/J_Ops/ndk")
-			nuke.pluginAddPath(System_Paths._CODE_NUKE_PLUGINS+"/J_Ops_2.3v1_for_Nuke9.0/Mac/J_Ops/icons")
-		try:
-			import J_Ops
-		except ImportError:
-			print "Did Not Import J_Ops Plugins"
+	# Determine whether to add the J_Ops plugins, based on the Nuke version.
+	# Anything later than ver. 10.5 will not add because no version is avalible.
+	if Major <= 10:
+		## J_Ops plugins...
+		if os.path.exists(System_Paths._CODE_NUKE_PLUGINS+"/J_Ops_2.3v1_for_Nuke9.0"):
+			if is_NT:
+				nuke.pluginAppendPath(System_Paths._CODE_NUKE_PLUGINS+"/J_Ops_2.3v1_for_Nuke9.0/Win/J_Ops/py")
+				nuke.pluginAddPath(System_Paths._CODE_NUKE_PLUGINS+"/J_Ops_2.3v1_for_Nuke9.0/Win/J_Ops/ndk")
+				nuke.pluginAddPath(System_Paths._CODE_NUKE_PLUGINS+"/J_Ops_2.3v1_for_Nuke9.0/Win/J_Ops/icons")
+			else:
+				nuke.pluginAppendPath(System_Paths._CODE_NUKE_PLUGINS+"/J_Ops_2.3v1_for_Nuke9.0/Mac/J_Ops/py")
+				nuke.pluginAddPath(System_Paths._CODE_NUKE_PLUGINS+"/J_Ops_2.3v1_for_Nuke9.0/Mac/J_Ops/ndk")
+				nuke.pluginAddPath(System_Paths._CODE_NUKE_PLUGINS+"/J_Ops_2.3v1_for_Nuke9.0/Mac/J_Ops/icons")
+			try:
+				import J_Ops
+			except ImportError:
+				print "Did Not Import J_Ops Plugins"
 	
 	## Cryptomatte plugins...
 	if os.path.exists(System_Paths._CODE_NUKE_PLUGINS+"/Cryptomatte"):
@@ -139,9 +145,13 @@ if nuke != None:
 			print "Did Not Import Cryptomatte Plugins"
 			
 	## VRayDenoiser plugins...
-	if os.path.exists(System_Paths._CODE_NUKE_PLUGINS+"/VRayDenoiser"):
-		nuke.pluginAppendPath(System_Paths._CODE_NUKE_PLUGINS+"/VRayDenoiser")
-	
+	if Major == 10:
+		if os.path.exists(System_Paths._CODE_NUKE_PLUGINS+"/VRayDenoiser/v10"):
+			nuke.pluginAppendPath(System_Paths._CODE_NUKE_PLUGINS+"/VRayDenoiser/v10")
+	if Major == 12:
+		if os.path.exists(System_Paths._CODE_NUKE_PLUGINS+"/VRayDenoiser/v12"):
+			nuke.pluginAppendPath(System_Paths._CODE_NUKE_PLUGINS+"/VRayDenoiser/v12")
+			
 	if nuke.GUI:
 		## Revamped threaded localise function from Frank Rueter...
 		## Replaces the nuke.localise method...

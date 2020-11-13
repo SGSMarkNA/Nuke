@@ -195,11 +195,13 @@ try:
 	geometry.commands.setupNodes(nuke.menu('Nodes').addMenu('Geometry'))
 except:
 	print "Did Not Import Geometry Tools Menu"
-
-try:
-	import J_Ops.menu
-except:
-	print "Did Not Import J_Ops Menu"
+	
+# J_Ops Does not have an update past version 10
+if Major <= 10:
+	try:
+		import J_Ops.menu
+	except:
+		print "Did Not Import J_Ops Menu"
 
 try:
 	import cryptomatte_utilities
@@ -207,12 +209,15 @@ try:
 except:
 	print "Did Not Import cryptomatte Menu"
 
-try:
-	menu = nuke.menu('Nodes')
-	subMenu = menu.addMenu("V-Ray Tools", icon = "VRayTools.png")
-	subMenu.addCommand('VRayDenoiser', 'nuke.createNode("VRayDenoiser")', icon = "VRayDenoiser.png")
-except:
-	print "Did Not create V-Ray Menu"
+
+## VRayDenoiser plugins...
+if os.path.exists(System_Paths._CODE_NUKE_PLUGINS+"/VRayDenoiser/v10") or os.path.exists(System_Paths._CODE_NUKE_PLUGINS+"/VRayDenoiser/v12"):
+	try:
+		menu = nuke.menu('Nodes')
+		subMenu = menu.addMenu("V-Ray Tools", icon = "VRayTools.png")
+		subMenu.addCommand('VRayDenoiser', 'nuke.createNode("VRayDenoiser")', icon = "VRayDenoiser.png")
+	except:
+		print "Did Not create V-Ray Menu"
 	
 try:
 	#os.sys.path.append(os.environ["USER_TOOLS_DIR"])
@@ -256,9 +261,12 @@ AW_ASSET_ASSEMBLY_SYSTEM_MENU.addCommand("Initialize System","if not os.path.joi
 
 ##-------------------------------------------------------------------
 #### Add Hotkey to create a new Shuffle node in the Node Graph...
-nuke.menu('Nodes').addCommand('@;Shuffle', 'nuke.createNode(\'Shuffle\')', 'h', shortcutContext=2)
-nuke.menu('Nodes').addCommand('@;ShuffleBranch', 'nuke.createNode(\'Shuffle\')', '+h', shortcutContext=2)
-
+if Major <= 10:
+	nuke.menu('Nodes').addCommand('@;Shuffle', 'nuke.createNode(\'Shuffle\')', 'h', shortcutContext=2)
+	nuke.menu('Nodes').addCommand('@;ShuffleBranch', 'nuke.createNode(\'Shuffle\')', '+h', shortcutContext=2)
+else:
+	nuke.menu('Nodes').addCommand('Shuffle', 'nuke.createNode(\'Shuffle2\')', 'h', shortcutContext=2)
+	nuke.menu('Nodes').addCommand('ShuffleBranch', 'nuke.createNode(\'Shuffle2\')', '+h', shortcutContext=2)
 
 try:
 	import Nuke_Scripts.ChannelFns.channel_hotbox

@@ -4,9 +4,19 @@
 #Author: Drew Loveridge
 import nuke
 import nukescripts
-from PySide.QtGui import QAction, QIcon, QApplication, QToolTip
-from PySide.QtCore import QObject, QEvent, Qt
-from pathlib2 import Path
+try:
+	from PySide.QtGui import QAction, QIcon, QApplication, QToolTip
+	from PySide.QtCore import QObject, QEvent, Qt
+except:
+	from PySide2.QtWidgets import QAction, QApplication, QToolTip
+	from PySide2.QtGui import QIcon 
+	from PySide2.QtCore import QObject, QEvent, Qt
+try:
+	from pathlib2 import Path
+except ImportError:
+	from Environment_Access import utilities, System_Paths
+	utilities.add_To_System_Path(utilities.path_Builder(System_Paths.AW_GLOBAL_SYSTEMS,"GENERAL_TOOLS"))
+	
 import os, sys, fnmatch
 import re
 ##_aw_user_scripts_menu_label   = os.environ["USERNAME"] + " Tools"		#### Removed for Mac OS X compatibility... RKB
