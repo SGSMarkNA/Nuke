@@ -218,14 +218,14 @@ if os.path.exists(System_Paths._CODE_NUKE_PLUGINS+"/VRayDenoiser/v10") or os.pat
 		subMenu.addCommand('VRayDenoiser', 'nuke.createNode("VRayDenoiser")', icon = "VRayDenoiser.png")
 	except:
 		print "Did Not create V-Ray Menu"
-	
-try:
-	#os.sys.path.append(os.environ["USER_TOOLS_DIR"])
-	os.sys.path.append(os.environ["NUKE_USER_TOOLS_DIR"])
-	import UserTools
-	nukescripts.executeDeferred(UserTools.pythonScripts)
-except:
-	pass
+if not System_Settings.NO_USER_TOOLS:
+	try:
+		#os.sys.path.append(os.environ["USER_TOOLS_DIR"])
+		os.sys.path.append(os.environ["NUKE_USER_TOOLS_DIR"])
+		import UserTools
+		nukescripts.executeDeferred(UserTools.pythonScripts)
+	except:
+		pass
 
 ##-------------------------------------------------------------------
 #### NOTE:
@@ -234,18 +234,19 @@ except:
 
 #### UPDATE:
 #### New Reinhard Viewer Process node - RKB 06/01/18 
-try:
-	os.sys.path.append(os.environ["NUKE_USER_TOOLS_DIR"])
-	import Reinhard_Preview_Tools.Photoshop_Reinhard_Preview_Tools
-	# Add button to Nuke Toolbar
-	if os.name == 'nt':
-		toolbar = nuke.toolbar("Nodes")
-		toolbar.addCommand("Reinhard Workflow", "Reinhard_Preview_Tools.Photoshop_Reinhard_Preview_Tools.start()", icon = os.path.join(os.environ['NUKE_USER_TOOLS_DIR'], "Rich", "Reinhard_Preview_Tools", "Reinhard_ICON_24px.png").replace('\\', '/'))
-	elif os.name =='posix':
-		toolbar = nuke.toolbar("Nodes")
-		toolbar.addCommand("Reinhard Workflow", "Reinhard_Preview_Tools.Photoshop_Reinhard_Preview_Tools.start()", icon = os.path.join(os.environ['NUKE_USER_TOOLS_DIR'], "Rich", "Reinhard_Preview_Tools", "Reinhard_ICON_24px.png"))  
-except:
-	pass
+if not System_Settings.NO_USER_TOOLS:
+	try:
+		os.sys.path.append(os.environ["NUKE_USER_TOOLS_DIR"])
+		import Reinhard_Preview_Tools.Photoshop_Reinhard_Preview_Tools
+		# Add button to Nuke Toolbar
+		if os.name == 'nt':
+			toolbar = nuke.toolbar("Nodes")
+			toolbar.addCommand("Reinhard Workflow", "Reinhard_Preview_Tools.Photoshop_Reinhard_Preview_Tools.start()", icon = os.path.join(os.environ['NUKE_USER_TOOLS_DIR'], "Rich", "Reinhard_Preview_Tools", "Reinhard_ICON_24px.png").replace('\\', '/'))
+		elif os.name =='posix':
+			toolbar = nuke.toolbar("Nodes")
+			toolbar.addCommand("Reinhard Workflow", "Reinhard_Preview_Tools.Photoshop_Reinhard_Preview_Tools.start()", icon = os.path.join(os.environ['NUKE_USER_TOOLS_DIR'], "Rich", "Reinhard_Preview_Tools", "Reinhard_ICON_24px.png"))  
+	except:
+		pass
 
 ##-------------------------------------------------------------------
 #### NOTE:

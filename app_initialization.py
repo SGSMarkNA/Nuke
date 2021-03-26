@@ -9,14 +9,13 @@ if os.environ.has_key('USE_WING_DEBUG'):
 		except:
 			pass
 
-
+__this_dir = os.path.dirname(__file__)
 # from Environment_Access import System_Paths, System_Settings, utilities
 if os.environ.has_key("AW_GLOBAL_SYSTEMS"):
 	if not os.environ["AW_GLOBAL_SYSTEMS"] in os.sys.path:
 		os.sys.path.append(os.environ["AW_GLOBAL_SYSTEMS"])
 else:
-	this_dir = os.path.dirname(__file__)
-	global_systems_directory = os.path.realpath(this_dir+"/../../Global_Systems")
+	global_systems_directory = os.path.realpath(__this_dir+"/../../Global_Systems")
 	if os.path.exists(global_systems_directory) and not global_systems_directory in os.sys.path:
 		os.sys.path.append(global_systems_directory)
 
@@ -101,11 +100,11 @@ AW_NUKE_PLUGINS_PATH   = utilities.add_To_Multi_Path_Environment_Key("NUKE_PLUGI
 #----------------------------------------------------------------------
 AW_NUKE_USER_TOOLS_DIR = utilities.get_and_set_environ_key("NUKE_USER_TOOLS_DIR", System_Paths._CODE_NUKE_USER_TOOLS)
 #----------------------------------------------------------------------
-
-if os.path.exists(AW_NUKE_USER_TOOLS_DIR):
-	Add_User_Tools_Packages_To_Path(AW_NUKE_USER_TOOLS_DIR)
-else:
-	print "AW_NUKE_USER_TOOLS_DIR %r Did not exist" % AW_NUKE_USER_TOOLS_DIR
+if not System_Settings.NO_USER_TOOLS:
+	if os.path.exists(AW_NUKE_USER_TOOLS_DIR):
+		Add_User_Tools_Packages_To_Path(AW_NUKE_USER_TOOLS_DIR)
+	else:
+		print "AW_NUKE_USER_TOOLS_DIR %r Did not exist" % AW_NUKE_USER_TOOLS_DIR
 	
 if nuke != None:
 	# Get the current version of nuke
