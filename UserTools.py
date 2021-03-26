@@ -15,7 +15,7 @@ try:
 	from pathlib2 import Path
 except ImportError:
 	from Environment_Access import utilities, System_Paths
-	utilities.add_To_System_Path(utilities.path_Builder(System_Paths.AW_GLOBAL_SYSTEMS,"GENERAL_TOOLS"))
+	utilities.add_To_System_Path(System_Paths.AW_SITE_PACKAGES)
 	from pathlib2 import Path
 	
 import os, sys, fnmatch

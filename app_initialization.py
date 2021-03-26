@@ -21,6 +21,8 @@ else:
 
 from Environment_Access import System_Paths, System_Settings, utilities
 
+utilities.add_To_System_Path(System_Paths.AW_SITE_PACKAGES)
+
 #try:
 	#from Environment_Access import System_Paths, System_Settings, utilities
 #except:
