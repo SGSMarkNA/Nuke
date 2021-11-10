@@ -264,10 +264,8 @@ AW_ASSET_ASSEMBLY_SYSTEM_MENU.addCommand("Initialize System","if not os.path.joi
 #### Add Hotkey to create a new Shuffle node in the Node Graph...
 if Major <= 10:
 	nuke.menu('Nodes').addCommand('@;Shuffle', 'nuke.createNode(\'Shuffle\')', 'h', shortcutContext=2)
-	nuke.menu('Nodes').addCommand('@;ShuffleBranch', 'nuke.createNode(\'Shuffle\')', '+h', shortcutContext=2)
 else:
 	nuke.menu('Nodes').addCommand('Shuffle', 'nuke.createNode(\'Shuffle2\')', 'h', shortcutContext=2)
-	nuke.menu('Nodes').addCommand('ShuffleBranch', 'nuke.createNode(\'Shuffle2\')', '+h', shortcutContext=2)
 
 try:
 	import Nuke_Scripts.ChannelFns.channel_hotbox
