@@ -203,7 +203,7 @@ else:
 ## MISC. KNOB DEFAULTS:
 ##-------------------------------------------------------------------------
 # Add default value to show what channels are actually being shuffled...
-nuke.knobDefault( 'Shuffle.label', '[value in]' )
+nuke.knobDefault( 'Shuffle.label', '[value in1]' )
 
 
 ##-------------------------------------------------------------------------
