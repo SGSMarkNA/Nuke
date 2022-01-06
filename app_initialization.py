@@ -271,14 +271,14 @@ try:
 			## Note: The default viewerProcess selection in the GUI is set via the "aw_Comp_config.ocio" file, in the "active_views:" entries.
 			##       The config file is located in \\isln-smb\library\OCIO_Configs\aw_Comp_aces_1.0.3\			
 			nuke.knobDefault('Root.colorManagement', 'OCIO')
-			nuke.knobDefault('Root.customOCIOConfigPath', defaultConfig)
-			nuke.knobDefault('Root.OCIO_config', 'custom')
-			nuke.knobDefault('Root.workingSpaceLUT', 'ACES - ACES2065-1')
-			nuke.knobDefault('Root.monitorLut', 'AW/sRGB_ICC(sRGB)')
-			nuke.knobDefault('Root.int8Lut', 'sRGB')
-			nuke.knobDefault('Root.int16Lut', 'sRGB')
-			nuke.knobDefault('Root.logLut', 'ACES - ACES2065-1')
-			nuke.knobDefault('Root.floatLut', 'ACES - ACES2065-1')
+			# nuke.knobDefault('Root.customOCIOConfigPath', defaultConfig)
+			# nuke.knobDefault('Root.OCIO_config', 'custom')
+			# nuke.knobDefault('Root.workingSpaceLUT', 'ACES - ACES2065-1')
+			# nuke.knobDefault('Root.monitorLut', 'AW/sRGB_ICC(sRGB)')
+			# nuke.knobDefault('Root.int8Lut', 'sRGB')
+			# nuke.knobDefault('Root.int16Lut', 'sRGB')
+			# nuke.knobDefault('Root.logLut', 'ACES - ACES2065-1')
+			# nuke.knobDefault('Root.floatLut', 'ACES - ACES2065-1')
 			##-------------------------------------------------------------------			
 		elif OCIO_CONFIG_FILE == 'nuke-default':
 			print "Using nuke-default OCIO config for colorManagement."
