@@ -226,6 +226,37 @@ if not System_Settings.NO_USER_TOOLS:
 		nukescripts.executeDeferred(UserTools.pythonScripts)
 	except:
 		pass
+	
+## VRayDenoiser plugins...
+if os.path.exists(System_Paths._CODE_NUKE_PLUGINS+"/VRayDenoiser/v10") or os.path.exists(System_Paths._CODE_NUKE_PLUGINS+"/VRayDenoiser/v12"):
+	try:
+		menu = nuke.menu('Nodes')
+		subMenu = menu.addMenu("V-Ray Tools", icon = "VRayTools.png")
+		subMenu.addCommand('VRayDenoiser', 'nuke.createNode("VRayDenoiser")', icon = "VRayDenoiser.png")
+	except:
+		print "Did Not create V-Ray Menu"
+		
+## Lens Distortion Plugin Kit...
+if Major == 12:
+	if os.path.exists(System_Paths._CODE_NUKE_PLUGINS+"/3DE_Lens_Distortion_Plugin_Kit_v2_6/v12_2"):
+		try:
+			nuke.menu("Nodes").addCommand("3DE4/LD_3DE4_Anamorphic_Standard_Degree_4", "nuke.createNode('LD_3DE4_Anamorphic_Standard_Degree_4')")
+			nuke.menu("Nodes").addCommand("3DE4/LD_3DE4_Anamorphic_Rescaled_Degree_4", "nuke.createNode('LD_3DE4_Anamorphic_Rescaled_Degree_4')")
+			nuke.menu("Nodes").addCommand("3DE4/LD_3DE4_Anamorphic_Degree_6", "nuke.createNode('LD_3DE4_Anamorphic_Degree_6')")
+			nuke.menu("Nodes").addCommand("3DE4/LD_3DE4_Radial_Standard_Degree_4", "nuke.createNode('LD_3DE4_Radial_Standard_Degree_4')")
+			nuke.menu("Nodes").addCommand("3DE4/LD_3DE4_Radial_Fisheye_Degree_8", "nuke.createNode('LD_3DE4_Radial_Fisheye_Degree_8')")
+			nuke.menu("Nodes").addCommand("3DE4/LD_3DE_Classic_LD_Model", "nuke.createNode('LD_3DE_Classic_LD_Model')")
+		except:
+			print "Lens Distortion Plugin Kit Menu"
+		
+if not System_Settings.NO_USER_TOOLS:
+	try:
+		#os.sys.path.append(os.environ["USER_TOOLS_DIR"])
+		os.sys.path.append(os.environ["NUKE_USER_TOOLS_DIR"])
+		import UserTools
+		nukescripts.executeDeferred(UserTools.pythonScripts)
+	except:
+		pass
 
 ##-------------------------------------------------------------------
 #### NOTE:

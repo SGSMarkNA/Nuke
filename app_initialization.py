@@ -164,6 +164,11 @@ if nuke != None:
 		if os.path.exists(System_Paths._CODE_NUKE_PLUGINS+"/VRayDenoiser/v12"):
 			nuke.pluginAppendPath(System_Paths._CODE_NUKE_PLUGINS+"/VRayDenoiser/v12")
 			
+	## Lens Distortion Plugin Kit...
+	if Major == 12:
+		if os.path.exists(System_Paths._CODE_NUKE_PLUGINS+"/3DE_Lens_Distortion_Plugin_Kit_v2_6/v12_2"):
+			nuke.pluginAppendPath(System_Paths._CODE_NUKE_PLUGINS+"/3DE_Lens_Distortion_Plugin_Kit_v2_6/v12_2")
+			
 	if nuke.GUI:
 		## Revamped threaded localise function from Frank Rueter...
 		## Replaces the nuke.localise method...
