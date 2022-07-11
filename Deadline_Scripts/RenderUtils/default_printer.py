@@ -5,10 +5,10 @@ If you want to use argument parsing
 """
 import sys
 
-print 'Your system arguments are:'
+print('Your system arguments are:')
 
 for i, j in enumerate(sys.argv):
-    print "{}: {}".format(i, j)
+    print("{}: {}".format(i, j))
 
-print "You can also run an argument parser as normal"
+print("You can also run an argument parser as normal")
 

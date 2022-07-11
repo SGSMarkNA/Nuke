@@ -27,8 +27,8 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-from generic import *
-from pdf import PdfFileReader, PdfFileWriter, Destination
+from .generic import *
+from .pdf import PdfFileReader, PdfFileWriter, Destination
 
 class _MergedPage(object):
     """
@@ -81,7 +81,7 @@ class PdfFileMerger(object):
         """
         
         my_file = False
-        if type(fileobj) in (str, unicode):
+        if type(fileobj) in (str, str):
             fileobj = file(fileobj, 'rb')
             my_file = True
         if type(fileobj) == PdfFileReader:
@@ -93,7 +93,7 @@ class PdfFileMerger(object):
         # Find the range of pages to merge
         if pages == None:
             pages = (0, pdfr.getNumPages())
-        elif type(pages) in (int, float, str, unicode):
+        elif type(pages) in (int, float, str, str):
             raise TypeError('"pages" must be a tuple of (start, end)')
         
         srcpages = []
@@ -155,7 +155,7 @@ class PdfFileMerger(object):
         kind of file-like object)
         """
         my_file = False
-        if type(fileobj) in (str, unicode):
+        if type(fileobj) in (str, str):
             fileobj = file(fileobj, 'wb')
             my_file = True
 
@@ -200,7 +200,7 @@ class PdfFileMerger(object):
         """
         new_dests = []
         prev_header_added = True
-        for k, o in dests.items():
+        for k, o in list(dests.items()):
             for j in range(*pages):
                 if pdf.getPage(j).getObject() == o['/Page'].getObject():
                     o[NameObject('/Page')] = o['/Page'].getObject()
@@ -238,7 +238,7 @@ class PdfFileMerger(object):
         for v in dests:
             pageno = None
             pdf = None
-            if v.has_key('/Page'):
+            if '/Page' in v:
                 for i, p in enumerate(self.pages):
                     if p.id == v['/Page']:
                         v[NameObject('/Page')] = p.out_pagedata
@@ -261,7 +261,7 @@ class PdfFileMerger(object):
                 
             pageno = None
             pdf = None
-            if b.has_key('/Page'):
+            if '/Page' in b:
                 for i, p in enumerate(self.pages):
                     if p.id == b['/Page']:
                         b[NameObject('/Page')] = p.out_pagedata
@@ -286,7 +286,7 @@ class PdfFileMerger(object):
             if pageno != None:
                 nd[NameObject('/Page')] = NumberObject(pageno)
             else:
-                raise ValueError, "Unresolved named destination '%s'" % (nd['/Title'],)
+                raise ValueError("Unresolved named destination '%s'" % (nd['/Title'],))
     
     def _associate_bookmarks_to_pages(self, pages, bookmarks=None):
         if bookmarks == None:
@@ -310,7 +310,7 @@ class PdfFileMerger(object):
             if pageno != None:
                 b[NameObject('/Page')] = NumberObject(pageno)
             else:
-                raise ValueError, "Unresolved bookmark '%s'" % (b['/Title'],)
+                raise ValueError("Unresolved bookmark '%s'" % (b['/Title'],))
                 
     def findBookmark(self, bookmark, root=None):
     	if root == None:

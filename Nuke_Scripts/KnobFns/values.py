@@ -22,7 +22,7 @@ def set_selected_values():
 	knoblist = []
 	for i in nuke.selectedNodes():
 		if i.Class() == Class:
-			if i.knobs().has_key(Name):
+			if Name in i.knobs():
 				knb = i[Name]
 				knoblist.append(knb)
 	if len(knoblist):

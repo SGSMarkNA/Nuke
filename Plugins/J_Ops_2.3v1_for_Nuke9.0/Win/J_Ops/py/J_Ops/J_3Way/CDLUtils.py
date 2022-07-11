@@ -191,8 +191,8 @@ class CDLImporter() :
          
         try:
             self.tree = ET.parse(self.cdlfilename)
-        except Exception, inst:
-            print "Unexpected error opening %s: %s" % (self.cdlfilename, inst)
+        except Exception as inst:
+            print("Unexpected error opening %s: %s" % (self.cdlfilename, inst))
             return
         
         doc = self.tree.getroot()
@@ -232,16 +232,16 @@ class CDLImporter() :
          
         # Get internal CCC container ID's
         for element in iter:
-            if element.keys():
-               for name, value in element.items():
+            if list(element.keys()):
+               for name, value in list(element.items()):
                     cccname=value
                                    
             self.cdlcorrectionvalues[cccname]=dict({"type": "int"})
 
         # Get external CCC container ID's (theoretically should only be present in CDLs)
         for element in iterref:
-            if element.keys():
-               for name, value in element.items():
+            if list(element.keys()):
+               for name, value in list(element.items()):
                     cccname=value
                                    
             self.cdlcorrectionvalues[cccname]=dict({"type": "ext"})
@@ -261,8 +261,8 @@ class CDLImporter() :
         # which doesn't support it. Pah.
         iter = rootelem.findall(self.ASCCDLNS+"ColorCorrection")
         for element in iter:
-                if element.keys():
-                    for name, value in element.items():
+                if list(element.keys()):
+                    for name, value in list(element.items()):
                         if value==cccname:
                         
                             # Now element should be the item we want, in which case set the CDL transfer function data

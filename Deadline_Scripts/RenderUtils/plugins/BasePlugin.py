@@ -13,7 +13,7 @@ class BasePlugin(dict):
         self.grab_template(plugin_type)
 
     def grab_template(self, plugin_type):
-        for key, value in templates.__dict__[plugin_type + "_form"].items():
+        for key, value in list(templates.__dict__[plugin_type + "_form"].items()):
             self[key] = value
 
     @staticmethod

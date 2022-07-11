@@ -11,10 +11,10 @@ def copy_bounding_box(Master, slaves, offset = 0):
 	# Make sure the Master input is of type BBox_Knob
 	if not typeChecks.is_BBox_Knob(Master):
 		# If Not Raise a ValueError and Tell Tell The User
-		raise ValueError(),str(
+		raise ValueError()(str(
 			"Master Input Must Be A BBox_Knob And A "+
 			str(type(Master))+
-			" was Found instead")
+			" was Found instead"))
 	# Grab and store the values for the Master BBox_Knob 
 	x,y,r,t = Master.x(),Master.y(),Master.r(),Master.t()
 	# Check if the slaves input is a list
@@ -24,12 +24,12 @@ def copy_bounding_box(Master, slaves, offset = 0):
 			# Check if the slave at index i is of type BBox_Knob
 			if not typeChecks.is_BBox_Knob(v):
 				# If Not Raise a ValueError and Tell Tell The User
-				raise ValueError(),str(
+				raise ValueError()(str(
 					"Found "+
 					(str(type(v)))+
 					" at index "+
 					str(i)+
-					" all input slaves must be of type BBox_Knob")
+					" all input slaves must be of type BBox_Knob"))
 		# iterate Through each slave and set it's values to the master with
 		# the optional offset
 		for s in slaves:

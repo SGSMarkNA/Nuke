@@ -1,23 +1,38 @@
-print "Running Nuke Init"
+print("Running Nuke Init")
 import os
 import nuke
 import nukescripts
-if os.environ.has_key('USE_WING_DEBUG'):
-	if os.environ['USE_WING_DEBUG'] == "1":
+if 'USE_WING_DEBUG' in os.environ:
+	try:
+		import wingdbstub
+	except:
+		os.sys.path.append(r"C:\Program Files (x86)\Wing Pro 8")
 		try:
 			import wingdbstub
 		except:
-			pass
+			print("Could Not Import Wing Debuger")
+
+try:
+	import wingdbstub
+except:
+	os.sys.path.append(r"C:\Program Files (x86)\Wing Pro 8")
+	try:
+		import wingdbstub
+	except:
+		print("Could Not Import Wing Debuger")
 
 __this_dir = os.path.dirname(__file__)
 # from Environment_Access import System_Paths, System_Settings, utilities
-if os.environ.has_key("AW_GLOBAL_SYSTEMS"):
+if "AW_GLOBAL_SYSTEMS" in os.environ:
 	if not os.environ["AW_GLOBAL_SYSTEMS"] in os.sys.path:
 		os.sys.path.append(os.environ["AW_GLOBAL_SYSTEMS"])
 else:
 	global_systems_directory = os.path.realpath(__this_dir+"/../../Global_Systems")
 	if os.path.exists(global_systems_directory) and not global_systems_directory in os.sys.path:
 		os.sys.path.append(global_systems_directory)
+		os.sys.path.append(os.path.join(global_systems_directory,"DML_Tools"))
+		os.sys.path.append(os.path.join(global_systems_directory,"DML_Tools","DML_PYQT"))
+		os.sys.path.append(os.path.join(global_systems_directory,"DML_Tools","DML_Nuke"))
 
 from Environment_Access import System_Paths, System_Settings, utilities
 
@@ -87,7 +102,7 @@ def get_and_set_environ_key_path(key, default, add_to_path=False, fource_default
 def Add_User_Tools_Packages_To_Path(folder):
 	folder = os.path.expandvars(folder)
 	nuke.pluginAppendPath(folder)
-	r,names,files = os.walk(folder).next()
+	r,names,files = next(os.walk(folder))
 	for n in names:
 		path = os.path.join(r, n)
 		os.sys.path.append(path)
@@ -106,7 +121,7 @@ if not System_Settings.NO_USER_TOOLS:
 	if os.path.exists(AW_NUKE_USER_TOOLS_DIR):
 		Add_User_Tools_Packages_To_Path(AW_NUKE_USER_TOOLS_DIR)
 	else:
-		print "AW_NUKE_USER_TOOLS_DIR %r Did not exist" % AW_NUKE_USER_TOOLS_DIR
+		print("AW_NUKE_USER_TOOLS_DIR %r Did not exist" % AW_NUKE_USER_TOOLS_DIR)
 	
 if nuke != None:
 	# Get the current version of nuke
@@ -125,7 +140,7 @@ if nuke != None:
 		try:
 			import geometry
 		except:
-			print "Did Not Import Geometry Plugins"
+			print("Did Not Import Geometry Plugins")
 
 	# Determine whether to add the J_Ops plugins, based on the Nuke version.
 	# Anything later than ver. 10.5 will not add because no version is avalible.
@@ -143,7 +158,7 @@ if nuke != None:
 			try:
 				import J_Ops
 			except ImportError:
-				print "Did Not Import J_Ops Plugins"
+				print("Did Not Import J_Ops Plugins")
 	
 	## Cryptomatte plugins...
 	if os.path.exists(System_Paths._CODE_NUKE_PLUGINS+"/Cryptomatte"):
@@ -154,7 +169,7 @@ if nuke != None:
 			import cryptomatte_utilities
 			cryptomatte_utilities.setup_cryptomatte()
 		except ImportError:
-			print "Did Not Import Cryptomatte Plugins"
+			print("Did Not Import Cryptomatte Plugins")
 			
 	## VRayDenoiser plugins...
 	if Major == 10:
@@ -222,12 +237,14 @@ if Major >= 10:
 	try:
 		os.sys.path.append(os.environ['NUKE_USER_TOOLS_DIR'])
 		import Callback_WriteNode_create_directories_ON
-		print 'Successfully imported the {} module.'.format(modulename)
+		print('Successfully imported the {} module.'.format(modulename))
 	except:
 		if modulename not in sys.modules:
-			print 'ERROR: Unable to load the {} module.'.format(modulename)	
-
-
+			print('ERROR: Unable to load the {} module.'.format(modulename))	
+if Major >= 13:
+	os.environ["QT_PACKAGE"] = "PySide2"
+else:
+	os.environ["QT_PACKAGE"] = "PySide"
 ##-------------------------------------------------------------------------
 ##  WriteNodeMetadata --->> Adds Metadata Tab to all Write nodes!
 ##  Callbacks on tab for adding an ICC Profile to an image, adding XMP/IPTC creator
@@ -238,10 +255,10 @@ modulename = 'WriteNodeMetadata'
 try:
 	os.sys.path.append(os.environ['NUKE_USER_TOOLS_DIR'])
 	import Callbacks_WriteNodeMetadata
-	print 'Successfully imported the {} module.'.format(modulename)
+	print('Successfully imported the {} module.'.format(modulename))
 except:
 	if modulename not in sys.modules:
-		print 'ERROR: Unable to load the {} module.'.format(modulename)
+		print('ERROR: Unable to load the {} module.'.format(modulename))
 ##-------------------------------------------------------------------
 
 
@@ -256,7 +273,7 @@ try:
 	Major = nuke.NUKE_VERSION_MAJOR
 	if Major >= 10:
 		if 'aw_Comp_config' in OCIO_CONFIG_FILE:
-			print "Using custom OCIO config 'aw_Comp_config' for colorManagement."
+			print("Using custom OCIO config 'aw_Comp_config' for colorManagement.")
 			defaultConfig = OCIO_CONFIG_FILE.replace('\\', '/')
 			##-------------------------------------------------------------------
 			## Default Color Workflow --> "Delta_sRGB"
@@ -286,17 +303,18 @@ try:
 			# nuke.knobDefault('Root.floatLut', 'ACES - ACES2065-1')
 			##-------------------------------------------------------------------			
 		elif OCIO_CONFIG_FILE == 'nuke-default':
-			print "Using nuke-default OCIO config for colorManagement."
+			print("Using nuke-default OCIO config for colorManagement.")
 	else:
 		# Just let the Nuke default color settings load for earlier releases...
-		print "Using nuke-default OCIO config for colorManagement."
+		print("Using nuke-default OCIO config for colorManagement.")
 except Exception:
-	print "ERROR: Unable to load the OCIO config file!"
+	print("ERROR: Unable to load the OCIO config file!")
 	nuke.critical("Unable to load the OCIO config file!")
 ##-------------------------------------------------------------------
-try:
-	import DML_Tools
-except:
-	print "Could Not import Dml_Tools"
-	pass
+import DML_Tools	
+#try:
+	#import DML_Tools
+#except:
+	#print("Could Not import Dml_Tools")
+	#pass
 ##-------------------------------------------------------------------

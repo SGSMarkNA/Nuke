@@ -26,7 +26,7 @@ class FontCycler :
 		elif self.index >= len(self.fonts): self.index = 0
 		self.setFont()
 
-	def next( self ) :
+	def __next__( self ) :
 		self.cycle(1)
 
 	def prev( self ) :

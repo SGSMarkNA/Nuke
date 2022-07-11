@@ -6,7 +6,7 @@ except ImportError:
 def get_knob_values(knob_name,nodes=None):
 	if nodes is None:
 		nodes = nuke.selectedNodes()
-	values = [n.knob(knob_name).value() for n in nodes if knob_name in n.knobs().keys()]
+	values = [n.knob(knob_name).value() for n in nodes if knob_name in list(n.knobs().keys())]
 		
 
 def all_node_info():

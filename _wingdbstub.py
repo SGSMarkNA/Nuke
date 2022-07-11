@@ -124,7 +124,7 @@ if sys.hexversion >= 0x03000000:
     return key in o
 else:
   def has_key(o, key):
-    return o.has_key(key)
+    return key in o
     
 # Check environment:  Must have WINGHOME defined if still == None
 if WINGHOME == None:
@@ -175,7 +175,7 @@ def _ImportWingdb(winghome, user_settings=None):
   
   try:
     exec_dict = {}
-    execfile(os.path.join(winghome, 'bin', '_patchsupport.py'), exec_dict)
+    exec(compile(open(os.path.join(winghome, 'bin', '_patchsupport.py'), "rb").read(), os.path.join(winghome, 'bin', '_patchsupport.py'), 'exec'), exec_dict)
     find_matching = exec_dict['FindMatching']
     dir_list = find_matching('bin', winghome, user_settings)
   except Exception:

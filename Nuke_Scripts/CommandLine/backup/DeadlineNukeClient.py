@@ -37,7 +37,7 @@ def main():
         
         # Add the path to the system path
         if path not in sys.path :
-            print "Appending \"" + path + "\" to system path to import SubmitNukeToDeadline module"
+            print("Appending \"" + path + "\" to system path to import SubmitNukeToDeadline module")
             sys.path.append( path )
 
         # Import the script and call the main() function
@@ -45,7 +45,7 @@ def main():
             import SubmitNukeToDeadline
             SubmitNukeToDeadline.SubmitToDeadline( path )
         except:
-            print traceback.format_exc()
+            print(traceback.format_exc())
             nuke.message( "The SubmitNukeToDeadline.py script could not be found in the Deadline Repository. Please make sure that the Deadline Client has been installed on this machine, that the Deadline Client bin folder is set in the DEADLINE_PATH environment variable, and that the Deadline Client has been configured to point to a valid Repository." )
     else:
         nuke.message( "The SubmitNukeToDeadline.py script could not be found in the Deadline Repository. Please make sure that the Deadline Client has been installed on this machine, that the Deadline Client bin folder is set in the DEADLINE_PATH environment variable, and that the Deadline Client has been configured to point to a valid Repository." )

@@ -16,5 +16,5 @@ def multi_output_connect():
 #===============================================================================
 def multi_input_connect():
 	nodeList = nuke.selectedNodes()
-	for i in reversed(range(1, len(nodeList), 1)):
+	for i in reversed(list(range(1, len(nodeList), 1))):
 		nodeList[0].setInput(i-1, nodeList[i])

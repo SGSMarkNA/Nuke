@@ -29,7 +29,7 @@ def views_connecter(OneViews,joinView):
 				view_names = oneview.knob("view_names").value().split()
 				if len(view_names):
 					for i,v in enumerate(view_names):
-						if views.has_key(v):
+						if v in views:
 							joinView.setInput(views[v], oneview)
 
 			elif "views" in oneview.knobs():
@@ -39,13 +39,13 @@ def views_connecter(OneViews,joinView):
 					if not n == None:
 						lines = n.knob("views").toScript().split()
 					else:
-						print oneview.knob("views").toScript()
+						print(oneview.knob("views").toScript())
 				else:
 					lines = oneview.knob("views").toScript().split()
 				if len(lines):
 					for i,v in enumerate(lines):
 						if i%2 == 0:
-							if views.has_key(v):
+							if v in views:
 								joinView.setInput(views[v], oneview)
 
 def connect_oneviews_to_joinview():
@@ -83,7 +83,7 @@ def set_inner_group_joinview(grp):
 	viewIndices = view_indices2(jv)
 	input_dict = get_group_input_dict(grp)
 
-	for k,v in input_view_dic.items():
+	for k,v in list(input_view_dic.items()):
 		nodeToconnect = input_dict[k]
 		joinview_input_index = viewIndices[v]
 		jv.setInput(joinview_input_index, nodeToconnect)
@@ -92,7 +92,7 @@ def create_joinview_group(oneview_inputs=None):
 	if oneview_inputs is None:
 		oneview_inputs = nuke.selectedNodes("OneView")
 	if not len(oneview_inputs):
-		raise ValueError,"A list of oneview Nodes must be input or selected for this fn to work"
+		raise ValueError("A list of oneview Nodes must be input or selected for this fn to work")
 	inputs = []
 	oneviews = []
 	grp = nuke.nodes.Group()

@@ -2,6 +2,7 @@
 #Creation Date:  (December 1, 2006)
 
 #Author: Drew Loveridge
+import importlib
 import nuke
 import nukescripts
 try:
@@ -25,7 +26,7 @@ _aw_user_scripts__main_folder = Path(Path(os.environ["HOME"]).joinpath(".nuke"))
 _aw_python_scripts_menu_label = "AW User Tools"
 _aw_python_scripts_toolbar_label = "AW User Nodes"
 _nuke_global_menu_names = ['Nuke', 'Pane', 'Node Graph', 'Properties', 'Animation', 'Viewer', 'Nodes', 'Axis']
-if os.environ.has_key("NUKE_USER_TOOLS_DIR"):
+if "NUKE_USER_TOOLS_DIR" in os.environ:
 	_aw_user_tools_main_folder    = Path(os.path.expandvars(os.environ["NUKE_USER_TOOLS_DIR"]))
 else:
 	raise LookupError("Could Not find User Tools Env Variable NUKE_USER_TOOLS_DIR")
@@ -124,10 +125,10 @@ class Menu_Item_QAction(QAction):
 		# The reload command should have a way of being turned off and on from the UI
 		mod_key = QApplication.keyboardModifiers()
 		
-		exec 'import ' + self.script
+		exec('import ' + self.script)
 		
 		if self.auto_reload:
-			exec  'reload (' + self.script + ')'
+			exec('importlib.reload (' + self.script + ')')
 			
 		input_args = []
 		
@@ -143,7 +144,7 @@ class Menu_Item_QAction(QAction):
 				input_args = self.ctrl_args
 			
 		if len(input_args):
-			exec self.script + '.' + self.fn_name + '(%s)' % ",".join(input_args)
+			exec(self.script + '.' + self.fn_name + '(%s)' % ",".join(input_args))
 		else:
 			return getattr(locals()[self.script], self.fn_name)()
 			#exec self.script + '.' + self.fn_name + '(%s)' % self.fn_defaults
@@ -398,13 +399,13 @@ def importAndRun(scrpt, fn):
 	# create the Python command that is invoked by the menu item
 	# This could be changed to scrpt.main if that is normal
 	# The reload command should have a way of being turned off and on from the UI
-	exec 'import ' + scrpt
+	exec('import ' + scrpt)
 
-	exec  'reload (' + scrpt + ')'
+	exec('reload (' + scrpt + ')')
 	if scrpt == "UserTools":
-		exec scrpt + '.pythonScripts()'
+		exec(scrpt + '.pythonScripts()')
 	else:
-		exec scrpt + '.' + fn + '()'
+		exec(scrpt + '.' + fn + '()')
 
 #----------------------------------------------------------------------
 def menu_exist(menu_name):
@@ -453,12 +454,12 @@ def clear_User_Tools_Sub_menus():
 		elif menu_name == "Pane":
 			if Menu.findItem(_aw_python_scripts_menu_label) != None:
 				sub_menu = Menu.findItem(_aw_python_scripts_menu_label)
-				for item in sub_menu.items(): 
+				for item in list(sub_menu.items()): 
 					sub_menu.removeItem(item.name())
 		else:
 			if Menu.findItem(_aw_python_scripts_menu_label) != None:
 				sub_menu = Menu.findItem(_aw_python_scripts_menu_label)
-				for item in sub_menu.items(): 
+				for item in list(sub_menu.items()): 
 					sub_menu.removeItem(item.name())
 
 #----------------------------------------------------------------------

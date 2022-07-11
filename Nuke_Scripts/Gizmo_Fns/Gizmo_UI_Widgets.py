@@ -244,7 +244,7 @@ class UI_Base_Widget_Knob(PYQT.QWidget):
 			cmd = moduleName+"."+cls.__name__+'(  nuke.thisNode()  )'
 		else:
 			cmd = cls.__name__+'(  nuke.thisNode()  )'
-		if tab in node.knobs().keys():
+		if tab in list(node.knobs().keys()):
 			remove_Tab(node,tab)
 		tab_knb = nuke.Tab_Knob(tab)
 		node.addKnob(tab_knb)

@@ -4,7 +4,7 @@ try :
 except ImportError:
 	nuke = None
 	
-import hierarchy
+from . import hierarchy
 def get_everything_selected(*args,**kargs):
 	nodeList = kargs.get("nodelist",[])
 	group    = kargs.get("group",nuke.root())

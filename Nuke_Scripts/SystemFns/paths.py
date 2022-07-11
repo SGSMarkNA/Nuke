@@ -17,7 +17,7 @@ def generate_Gizmo_Menu():
 			m.addCommand(g , "nuke.createNode('%s')" % g)
 
 def recursively_Scan_And_Set_Gizmo_Paths(Directory_Path,addToSystemPath=False):
-	root, dirs, files = os.walk(Directory_Path).next()
+	root, dirs, files = next(os.walk(Directory_Path))
 	addit = 0
 	for f in files:
 		if os.path.splitext(f)[-1] ==  ".gizmo":
@@ -29,7 +29,7 @@ def recursively_Scan_And_Set_Gizmo_Paths(Directory_Path,addToSystemPath=False):
 			m = os.path.normpath(root).split("\\")[-1]
 		else:
 			m = os.path.normpath(root).split("/")[-1]
-		if not m in _GIZMO_PATH_STORAGE_DICT.keys():
+		if not m in list(_GIZMO_PATH_STORAGE_DICT.keys()):
 			_GIZMO_PATH_STORAGE_DICT[m] = []
 		for f in files:
 			fsplit = f.split(".")

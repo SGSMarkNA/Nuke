@@ -1,6 +1,9 @@
 # Nuke menu-commands
 
-import nuke, fontcycler, preftab, defaults
+import nuke
+import geometry.fontcycler as fontcycler
+import geometry.preftab as preftab
+import geometry.defaults as defaults
 import threading
 
 #
@@ -164,11 +167,11 @@ def open_docs_url():
 			cmd = ["open", url]
 		elif hasattr(os, "startfile"):
 			return os.startfile(url)
-		elif os.environ.has_key("KDE_FULL_SESSION") or os.environ.has_key("KDE_MULTIHEAD") or \
-		     os.environ.has_key("GNOME_DESKTOP_SESSION_ID") or os.environ.has_key("GNOME_KEYRING_SOCKET"):
+		elif "KDE_FULL_SESSION" in os.environ or "KDE_MULTIHEAD" in os.environ or \
+		     "GNOME_DESKTOP_SESSION_ID" in os.environ or "GNOME_KEYRING_SOCKET" in os.environ:
 			cmd = ["xdg-open", url]
 		else:
-			raise OSError, "Desktop not supported."
+			raise OSError("Desktop not supported.")
 
 		return _run(cmd, 0, wait)
 

@@ -45,5 +45,5 @@ def growSelection( n=1, mask=0x00000004 ):
 	# if mask < 1 or mask > 7 throw ValueError
 	k = pyKnob()
 	if k:
-		for i in xrange(0,n):
+		for i in range(0,n):
 			k.growSelection(mask);

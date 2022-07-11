@@ -1,4 +1,4 @@
-import Vec2
+from . import Vec2
 
 class Node_List(list):
 	@property

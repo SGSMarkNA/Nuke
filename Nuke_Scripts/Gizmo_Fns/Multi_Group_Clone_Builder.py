@@ -5,7 +5,7 @@ from functools import wraps
 clear_selection  = lambda : not all([node.setSelected(False) for node in nuke.allNodes()])
 delete_nodes     = lambda node_list: [nuke.delete(node) for node in node_list]
 Select_Replace_Nodes   = lambda node_list:[node.setSelected( node in node_list ) for node in nuke.allNodes()]
-Find_Cloned_Groups = lambda id_tag_value: [n for n in [n for n in nuke.allNodes("Group") if n.knobs().has_key("clone_id_tag")] if int(n.knob("clone_id_tag").value()) == id_tag_value]
+Find_Cloned_Groups = lambda id_tag_value: [n for n in [n for n in nuke.allNodes("Group") if "clone_id_tag" in n.knobs()] if int(n.knob("clone_id_tag").value()) == id_tag_value]
 _Global_UnClonable_Node_Types = ["Roto","RotoPaint","Group","Dot"]
 #===============================================================================
 def find_upstream_node( matchclass=None, startnode=None ):
@@ -92,7 +92,7 @@ def Create_Clone_Group_Offset_Dict(clone_group,start_node):
 
 def Apply_Offset_Dict(master,offset_dict):
 	v1 = VEC2(master.xpos(),master.ypos())
-	for n,v in offset_dict.items():
+	for n,v in list(offset_dict.items()):
 		v = v1 + v
 		n.setXYpos(int(v.x),int(v.y))
 

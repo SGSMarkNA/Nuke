@@ -18,7 +18,7 @@ There are a few ways I see a maya scene being rendered.
 import pymel as pm
 
 # Custom Imports
-from BasePlugin import BasePlugin
+from .BasePlugin import BasePlugin
 
 
 class Plugin(BasePlugin):
@@ -69,9 +69,9 @@ class Plugin(BasePlugin):
 
 def main():
     x = Plugin()
-    for key, value in x.items():
-        print key + ": ",
-        print value
+    for key, value in list(x.items()):
+        print(key + ": ", end=' ')
+        print(value)
 
 if __name__ == '__main__':
     main()

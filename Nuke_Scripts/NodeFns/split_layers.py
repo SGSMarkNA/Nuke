@@ -41,7 +41,7 @@ def get_node_layers_dict_catagorized(node=None):
 	catagorized_layers  = dict(util={} , beauty={}, mask={},other={})
 
 	layers = get_node_layers_dict(G_node)
-	for layer,channel in layers.items():
+	for layer,channel in list(layers.items()):
 		if layer.lower ()in bit_32_types:
 			catagorized_layers["util"][layer]=channel
 		elif layer.lower() in bit_16_types:
@@ -88,7 +88,7 @@ def split_layers(node=None):
 	write_32bit_prefs = 'channels %s file_type exr datatype "%i bit float"'
 	shuffleCopy = None
 	with grp:
-		for layer,chans in layerDic.items():
+		for layer,chans in list(layerDic.items()):
 			shuffle_name  = layer+"_Shuffle"
 			write_name    = layer+"_Write"
 

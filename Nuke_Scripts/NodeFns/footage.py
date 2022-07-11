@@ -19,7 +19,7 @@ def reload_all_footage(*args,**kargs):
 		if not n["disable"].value():
 			if os.path.exists(nuke.filename(n,nuke.REPLACE)):
 				filename = os.path.dirname(nuke.filename(n,nuke.REPLACE))+"/"+os.path.basename(nuke.filename(n,nuke.REPLACE)).split(".")[0]
-				print "Readloading '%s'" % filename
+				print("Readloading '%s'" % filename)
 				n.knob("reload").execute()
 	groups = nuke.allNodes("Group",group=group)+[n for n in nuke.allNodes(group=group) if isinstance(n,nuke.Gizmo)]
 	for i in groups:
@@ -35,7 +35,7 @@ def collect_read_nodes(scanGroup="Start",storageGroup=None):
 		n.setSelected(False)
 
 	for n in nuke.allNodes("Read",scanGroup):
-		print "Selecting ReadNode %s" % n.fullName()
+		print("Selecting ReadNode %s" % n.fullName())
 		n.setSelected(True)
 	with scanGroup:
 		if len(nuke.selectedNodes()):
@@ -44,7 +44,7 @@ def collect_read_nodes(scanGroup="Start",storageGroup=None):
 				nuke.nodePaste( '%clipboard%' )
 
 	for n in nuke.allNodes("Group",scanGroup):
-		print n.fullName()
+		print(n.fullName())
 		if not n.name() == "ReadNode_storageGroup":
 			collect_read_nodes(n,storageGroup)
 
@@ -109,14 +109,14 @@ def go_to_file():
 		if os.name == 'nt':
 			filePath = "\\".join(filePath.replace("/","\\").split("\\")[:-1])
 			if os.path.exists(filePath):
-				print filePath
+				print(filePath)
 				os.system( 'C:/WINDOWS/explorer ' + filePath)
 			else:
 				nuke.message("The selected node's '%s' File_Knob value\n%r\ncould not be accesed through Windows Explorer or does not exist." % (node.name(),filePath))
 		elif os.name == 'posix':
 			filePath = '/'.join(filePath.split('/')[:-1])
 			if os.path.exists(filePath):
-				print filePath
+				print(filePath)
 				subprocess.Popen(['open', filePath])
 			else:
 				nuke.message("The selected node's '%s' File_Knob value\n%r\ncould not be accesed through the Finder or does not exist." % (node.name(),filePath))
@@ -134,14 +134,14 @@ def go_To_This_Nodes_file():
 		if os.name == 'nt':
 			filePath = "\\".join(filePath.replace("/","\\").split("\\")[:-1])
 			if os.path.exists(filePath):
-				print filePath
+				print(filePath)
 				os.system( 'C:/WINDOWS/explorer ' + filePath)
 			else:
 				nuke.message("The selected node's '%s' File_Knob value\n%r\ncould not be accesed through Windows Explorer or does not exist.\nSincerely, and with great confusion,\nyour friend,\nThe Message Writer." % (node.name(),filePath))
 		elif os.name == 'posix':
 			filePath = '/'.join(filePath.split('/')[:-1])
 			if os.path.exists(filePath):
-				print filePath
+				print(filePath)
 				subprocess.Popen(['open', filePath])
 			else:
 				nuke.message("The selected node's '%s' File_Knob value\n%r\ncould not be accesed through the Finder or does not exist." % (node.name(),filePath))
@@ -271,7 +271,7 @@ def png_to_mov():
 		m.setInput(0,i)
 		m.knob('ypos').setValue(ypos)
 		m.knob('xpos').setValue(xpos)
-		print qtFile
+		print(qtFile)
 		m.knob('file').setValue(qtPathN)
 		#m.knob('codec').setValue(0)
 

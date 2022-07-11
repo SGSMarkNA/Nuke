@@ -19,18 +19,18 @@ def Assine_Version_Frame_Data(filename):
 	start, end = determan_start_end(files)
 	frame_count = len(files)
 	frame_range = "%i-%i" % (start, end)
-	print files
-	print frame_range, start, end, frame_count
+	print(files)
+	print(frame_range, start, end, frame_count)
 	
 def filenameFix(filename):
 	return filename.replace( "\\", "/" )
 
 def file_seq_dict(root_folder,res={}):
 	
-	root, dirs, files = os.walk(root_folder).next()
+	root, dirs, files = next(os.walk(root_folder))
 	
 	for d in dirs:
-		print d
+		print(d)
 		child_folder = filenameFix(os.path.join(root,d))
 		
 		image_files = os.walk(child_folder).next()[2]
@@ -51,7 +51,7 @@ def construct_image_seq_data(root,files):
 		file_names = []
 		
 		for f in files:
-			print "\t",f
+			print("\t",f)
 			
 			match = name_num_ext_pattern.match(f)
 			
@@ -95,7 +95,7 @@ def determan_start_end(file_paths):
 	for f in file_names:
 		m = name_num_ext_pattern.match(f)
 		if m is None:
-			print f
+			print(f)
 		else:
 			ints.append(int(m.groupdict()["number"]))
 	
@@ -147,7 +147,7 @@ def construct_image_seq_dict(path,as_Nuke_Knobs=False,as_tcl=False):
 		                   origset=True)
 		if as_tcl:
 			tcl = ""
-			for k,v in knob_values.items():
+			for k,v in list(knob_values.items()):
 				if v == True:
 					tcl += "%s true " % k
 				elif v == False:

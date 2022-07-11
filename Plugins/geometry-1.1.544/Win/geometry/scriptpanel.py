@@ -32,7 +32,7 @@ class ScriptPanel( nukescripts.PythonPanel ):
 
 def run( name = None ):
 	kname = nuke.thisKnob().name()
-	print kname
+	print(kname)
 	node = nuke.thisNode()
 	knob = node[kname.replace('Edit', 'Expression')]
 	p = ScriptPanel(knob, name if name else node[kname.replace('Edit', 'Name')].getText())

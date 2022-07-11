@@ -8,7 +8,7 @@ def display_knobs():
 	
 	res =  "Node Name = %s(%s)\n" % (nod.name(),nod.Class())
 	res += "Knob Count = %i\n" % nod.numKnobs()
-	for key,val in nod.knobs().items():
+	for key,val in list(nod.knobs().items()):
 		res += "-"*60
 		res +="\n"
 		res  += "%s :: %s :: %s\n" % (key,val.Class(),repr(val.value()))

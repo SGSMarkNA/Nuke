@@ -28,7 +28,7 @@ def postage_stamps_setter(*args,**kwargs):
 			else:
 				nodeList.append(n)
 	for n in nodeList:
-		if "postage_stamp" in n.knobs().keys():
+		if "postage_stamp" in list(n.knobs().keys()):
 			if switch:
 				n.knob("postage_stamp").setValue(True)
 			else:

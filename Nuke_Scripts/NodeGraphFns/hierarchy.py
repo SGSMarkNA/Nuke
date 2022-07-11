@@ -3,7 +3,7 @@ try :
 except ImportError:
 	nuke = None
 
-import node_filters
+from . import node_filters
 
 def recursiveFindNodes(nodeClass, startNode):
 	if startNode.Class() == nodeClass:
@@ -127,7 +127,7 @@ class NodeDagPaths:
 		self.tabs = 0
 		self.start()
 	def PrintNode(self,node):
-		print "\t"*self.tabs+node.fullName()
+		print("\t"*self.tabs+node.fullName())
 
 	def start(self):
 		trunkNodes = trunk_nodes()

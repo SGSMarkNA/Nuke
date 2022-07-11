@@ -19,7 +19,7 @@ def main():
 			path = path.replace("\n","").replace( "\\", "/" )
 			
 			# Add the path to the system path
-			print "Appending \"" + path + "\" to system path to import SubmitNukeToDeadline module"
+			print("Appending \"" + path + "\" to system path to import SubmitNukeToDeadline module")
 			sys.path.append( path )
 
 			# Import the script and call the main() function

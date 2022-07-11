@@ -22,9 +22,9 @@ def Convert_Global_Config_Gizmo_To_Project():
 				path = gcd.knob("config_file").value()
 
 				if gcd.knob("config_prj_type").value() == "INT":
-					nuke.root().knob("aw_prj_config_build_type").setValue(nuke.root().knob("aw_prj_config_build_type").values()[0])
+					nuke.root().knob("aw_prj_config_build_type").setValue(list(nuke.root().knob("aw_prj_config_build_type").values())[0])
 				else:
-					nuke.root().knob("aw_prj_config_build_type").setValue(nuke.root().knob("aw_prj_config_build_type").values()[1])
+					nuke.root().knob("aw_prj_config_build_type").setValue(list(nuke.root().knob("aw_prj_config_build_type").values())[1])
 
 				nuke.root().knob("aw_prj_config_data_file").setValue(path)
 				nuke.delete(gcd)

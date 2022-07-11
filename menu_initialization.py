@@ -1,7 +1,15 @@
 import nuke
 import nukescripts
 import os
-
+if 'USE_WING_DEBUG' in os.environ:
+	try:
+		import wingdbstub
+	except:
+		os.sys.path.append(r"C:\Program Files (x86)\Wing Pro 8")
+		try:
+			import wingdbstub
+		except:
+			print("Could Not Import Wing Debuger")
 # Closes all property boxes at once (especially useful if you like to use floating windows).
 def CloseAllProperties():
 	
@@ -170,7 +178,7 @@ try:
 		for name, choice in aw_color_menu_items:
 			nuke.menu('Nuke').addCommand(name, choice)
 except Exception:
-	print "ERROR: Unable to add the AW_COLOR_TOOLS menus!"
+	print("ERROR: Unable to add the AW_COLOR_TOOLS menus!")
 	nuke.critical("Unable to add the AW_COLOR_TOOLS menus!")
 
 	
@@ -194,20 +202,20 @@ try:
 	import geometry.commands
 	geometry.commands.setupNodes(nuke.menu('Nodes').addMenu('Geometry'))
 except:
-	print "Did Not Import Geometry Tools Menu"
+	print("Did Not Import Geometry Tools Menu")
 	
 # J_Ops Does not have an update past version 10
 if Major <= 10:
 	try:
 		import J_Ops.menu
 	except:
-		print "Did Not Import J_Ops Menu"
+		print("Did Not Import J_Ops Menu")
 
 try:
 	import cryptomatte_utilities
 	cryptomatte_utilities.setup_cryptomatte_ui()
 except:
-	print "Did Not Import cryptomatte Menu"
+	print("Did Not Import cryptomatte Menu")
 
 
 ## VRayDenoiser plugins...
@@ -217,7 +225,7 @@ if os.path.exists(System_Paths._CODE_NUKE_PLUGINS+"/VRayDenoiser/v10") or os.pat
 		subMenu = menu.addMenu("V-Ray Tools", icon = "VRayTools.png")
 		subMenu.addCommand('VRayDenoiser', 'nuke.createNode("VRayDenoiser")', icon = "VRayDenoiser.png")
 	except:
-		print "Did Not create V-Ray Menu"
+		print("Did Not create V-Ray Menu")
 if not System_Settings.NO_USER_TOOLS:
 	try:
 		#os.sys.path.append(os.environ["USER_TOOLS_DIR"])
@@ -234,7 +242,7 @@ if os.path.exists(System_Paths._CODE_NUKE_PLUGINS+"/VRayDenoiser/v10") or os.pat
 		subMenu = menu.addMenu("V-Ray Tools", icon = "VRayTools.png")
 		subMenu.addCommand('VRayDenoiser', 'nuke.createNode("VRayDenoiser")', icon = "VRayDenoiser.png")
 	except:
-		print "Did Not create V-Ray Menu"
+		print("Did Not create V-Ray Menu")
 		
 ## Lens Distortion Plugin Kit...
 if Major == 12:
@@ -247,7 +255,7 @@ if Major == 12:
 			nuke.menu("Nodes").addCommand("3DE4/LD_3DE4_Radial_Fisheye_Degree_8", "nuke.createNode('LD_3DE4_Radial_Fisheye_Degree_8')")
 			nuke.menu("Nodes").addCommand("3DE4/LD_3DE_Classic_LD_Model", "nuke.createNode('LD_3DE_Classic_LD_Model')")
 		except:
-			print "Lens Distortion Plugin Kit Menu"
+			print("Lens Distortion Plugin Kit Menu")
 		
 if not System_Settings.NO_USER_TOOLS:
 	try:
@@ -287,8 +295,9 @@ try:
 	Nuke_Scripts.SystemFns.paths.generate_Gizmo_Menu()
 except:
 	pass
-AW_ASSET_ASSEMBLY_SYSTEM_MENU = nuke.menu("Nuke").addMenu("Asset Assembly System")
-AW_ASSET_ASSEMBLY_SYSTEM_MENU.addCommand("Initialize System","if not os.path.join(System_Paths.AW_COMMON_UTILITIES,'Other') in os.sys.path:\n\tos.sys.path.append(os.path.join(System_Paths.AW_COMMON_UTILITIES,'Other'))\nimport AW_Asset_Assembly_System.Simple_Main_Window\nprop_pan = nuke.getPaneFor('Properties.1')\nAW_Asset_Assembly_System.Simple_Main_Window.Global_Nuke_Pan.addToPane(prop_pan)")
+
+#AW_ASSET_ASSEMBLY_SYSTEM_MENU = nuke.menu("Nuke").addMenu("Asset Assembly System")
+#AW_ASSET_ASSEMBLY_SYSTEM_MENU.addCommand("Initialize System","if not os.path.join(System_Paths.AW_COMMON_UTILITIES,'Other') in os.sys.path:\n\tos.sys.path.append(os.path.join(System_Paths.AW_COMMON_UTILITIES,'Other'))\nimport AW_Asset_Assembly_System.Simple_Main_Window\nprop_pan = nuke.getPaneFor('Properties.1')\nAW_Asset_Assembly_System.Simple_Main_Window.Global_Nuke_Pan.addToPane(prop_pan)")
 
 
 ##-------------------------------------------------------------------
@@ -307,7 +316,7 @@ except:
 try:
 	from DML_Tools.menu import *
 except:
-	print "Could Not Import DML_Tools menu"
+	print("Could Not Import DML_Tools menu")
 
 #Gimp_menu = AW_TOOLS_MENU.addMenu("Gimped To PSD Nodes")
 #Gimp_menu.addCommand("Master Layer Order",'nuke.createNode("DML_Master_Layer_Order")')

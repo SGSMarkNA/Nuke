@@ -105,12 +105,12 @@ def get_backdrop_BBox(bd):
 
 def apply_Offset_node_dict(bd,data):
 	v1 = Vector2(bd.xpos(),bd.ypos())
-	for n,v in data.items():
+	for n,v in list(data.items()):
 		v = v1 + v
 		n.setXYpos(v.x,v.y)
 
 def apply_Offset_Backdrops_dict(data):
-	for bd,node_data in data.items():
+	for bd,node_data in list(data.items()):
 		apply_Offset_node_dict(bd, node_data)
 
 def get_node_backdrop_offset(bd,n):

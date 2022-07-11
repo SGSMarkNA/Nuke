@@ -1,1 +1,1 @@
-import beforeFrameRender
+from . import beforeFrameRender

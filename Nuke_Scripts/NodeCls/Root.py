@@ -1,5 +1,5 @@
 import nuke
-from Group import Group
+from .Group import Group
 class Root(Group):
 
 	def __init__(self):

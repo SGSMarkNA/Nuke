@@ -33,7 +33,7 @@ def createWriteDir():
 				try:
 					os.makedirs(osdir)
 				except WindowsError:
-					print "Cannot create file. It may already exist..."
+					print("Cannot create file. It may already exist...")
 		fknob.setValue(oldname)
 	else:
 		#print "Making Single Directory"
@@ -44,4 +44,4 @@ def createWriteDir():
 			try:
 				os.makedirs(osdir)
 			except WindowsError:
-				print "Cannot create file. It may already exist..."
+				print("Cannot create file. It may already exist...")

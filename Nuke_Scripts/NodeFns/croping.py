@@ -87,7 +87,7 @@ def auto_crop(first=None, last=None, inc=None, layer="a", views=None, Read_Overi
 			cropnode.knob("indicators").setValue(1)
 
 			for anim in cropbox.animations():
-				anim.changeInterpolation(anim.keys(),nuke.CONSTANT)
+				anim.changeInterpolation(list(anim.keys()),nuke.CONSTANT)
 
 			# deselect everything
 			all_nodes = nuke.allNodes()
@@ -124,10 +124,10 @@ def auto_crop(first=None, last=None, inc=None, layer="a", views=None, Read_Overi
 			x_A, y_A, r_A, t_A = box.animations()
 			removeable_indices = []
 			for i in range(x_A.size()):
-				x_K = x_A.keys()[i]
-				y_K = y_A.keys()[i]
-				r_K = r_A.keys()[i]
-				t_K = t_A.keys()[i]
+				x_K = list(x_A.keys())[i]
+				y_K = list(y_A.keys())[i]
+				r_K = list(r_A.keys())[i]
+				t_K = list(t_A.keys())[i]
 				if int(abs(x_K.y))==0 and int(abs(y_K.y))==0 and int(abs(r_K.y))==0 == int(abs(t_K.y))==0:
 					x_K.y = 0.0
 					y_K.y = 0.0

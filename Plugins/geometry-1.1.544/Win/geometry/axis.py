@@ -12,8 +12,8 @@ def versionGreater(major, minor):
 
 def Matrix4( cm ) :
 	m = _nukemath.Matrix4()
-	for r in xrange(0,4) :
-		for c in xrange(0,4) :
+	for r in range(0,4) :
+		for c in range(0,4) :
 			m[r*4 + c] = cm[c*4 + r]
 	return m
 
@@ -66,7 +66,7 @@ class AxisPivots :
 					return self.nodeGeometry(vn, 'geo')
 
 		viewer = nuke.createNode('Viewer') # getattr(nuke.nodes, 'Viewer')()
-		for i in xrange(1, viewer.inputs()) :
+		for i in range(1, viewer.inputs()) :
 			viewer.setInput(i, None)
 		if viewer.input(0) != node :
 			viewer.setInput(0, node)
@@ -75,7 +75,7 @@ class AxisPivots :
 		return rval
 
 	def range ( self ) :
-		return xrange(0, self.len)
+		return range(0, self.len)
 
 	def input ( self, i ) :
 		return self.node.input(i+self.offset)
@@ -101,7 +101,7 @@ class AxisPivots :
 		piv.setValue(self.imatrix.transform( _nukemath.Vector3(xfrm[0], xfrm[1], xfrm[2])))
 
 	def clear( self ) :
-		for i in xrange(self.len+self.offset, self.node.inputs()):
+		for i in range(self.len+self.offset, self.node.inputs()):
 			self.node.setInput(i, None)
 
 	def setName( self, i, c, name ) :
@@ -118,7 +118,7 @@ class AxisPivots :
 		if clz.find('PolyText')!=-1:
 			return self.node.knob('message').value().decode('utf8')
 		elif clz.find('PolyShape')!=-1:
-			import roto
+			from . import roto
 			return roto.RotoEvaluate(self.node.input(0), roto.Names()).parse(0)
 
 	def ui( self, name = None, stepx = 60, stepy = 80 ) :
@@ -132,7 +132,7 @@ class AxisPivots :
 			startx = self.node.xpos() - (stepx * (n-self.offset))
 			y = self.node.ypos()
 			x = startx
-			for i in xrange(self.offset, n) :
+			for i in range(self.offset, n) :
 				if msg:
 					while msg[i-self.offset+ns].isspace() :
 						c = i-self.offset+ns
@@ -151,11 +151,11 @@ class AxisPivots :
 			maxrun = max(maxrun, n-start)
 			if maxrun != n :
 				dx = startx - (self.node.xpos() - (stepx * maxrun))
-				for i in xrange(self.offset, n) :
+				for i in range(self.offset, n) :
 					node = self.node.input(i)
 					node.setXpos(node.xpos()-dx)
 		elif msg :
-			for i in xrange(self.offset, n) :
+			for i in range(self.offset, n) :
 				while msg[i-self.offset+ns].isspace() : ns = ns + 1;
 				self.setName(i, msg[i-self.offset], name).autoplace()
 

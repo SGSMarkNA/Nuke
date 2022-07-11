@@ -32,9 +32,9 @@ class KnobTypes(tuple):
 
 	def _replace(_self, **kwds):
 		'Return a new KnobTypes object replacing specified fields with new values'
-		result = _self._make(map(kwds.pop, ('ObsoleteKnob', 'StringKnob', 'FileKnob', 'IntKnob', 'EnumKnob', 'BitMaskKnob', 'BoolKnob', 'DoubleKnob', 'FloatKnob', 'ArrayKnob', 'ChannelMaskKnob', 'ChannelKnob', 'XYKnob', 'XYZKnob', 'WHKnob', 'BBoxKnob', 'SizeKnob', 'FormatKnob', 'ColorKnob', 'AColorKnob', 'TabKnob', 'CustomKnob', 'PyScriptKnob', 'TextEditorKnob', 'Transform2DKnob', 'SpacerKnob', 'TextKnob', 'HelpKnob', 'MultilineStringKnob', 'AxisKnob', 'UVKnob', 'Box3Knob', 'ScriptKnob', 'LookupCurvesKnob', 'TooltipKnob', 'PulldownKnob', 'EyeDropperKnob', 'RangeKnob', 'HistogramKnob', 'KeyerKnob', 'ColorChipKnob', 'LinkKnob', 'ScaleKnob', 'MultilineEvalStringKnob', 'OneViewKnob', 'MultiViewKnob', 'ViewViewKnob', 'PyPulldownKnob', 'GPUEngineKnob', 'MultiArrayKnob', 'ViewPairKnob', 'ListKnob', 'PythonKnob', 'MetaDataKnob', 'PixelAspectKnob', 'CpKnob', 'ToolbarKnob', 'TabGroupKnob', 'PluginPythonKnob', 'ExoGroupKnob', 'MenuKnob', 'PasswordKnob', 'ToolboxKnob', 'TableKnob', 'InputOnlyChannelMaskKnob', 'InputOnlyChannelKnob'), _self))
+		result = _self._make(list(map(kwds.pop, ('ObsoleteKnob', 'StringKnob', 'FileKnob', 'IntKnob', 'EnumKnob', 'BitMaskKnob', 'BoolKnob', 'DoubleKnob', 'FloatKnob', 'ArrayKnob', 'ChannelMaskKnob', 'ChannelKnob', 'XYKnob', 'XYZKnob', 'WHKnob', 'BBoxKnob', 'SizeKnob', 'FormatKnob', 'ColorKnob', 'AColorKnob', 'TabKnob', 'CustomKnob', 'PyScriptKnob', 'TextEditorKnob', 'Transform2DKnob', 'SpacerKnob', 'TextKnob', 'HelpKnob', 'MultilineStringKnob', 'AxisKnob', 'UVKnob', 'Box3Knob', 'ScriptKnob', 'LookupCurvesKnob', 'TooltipKnob', 'PulldownKnob', 'EyeDropperKnob', 'RangeKnob', 'HistogramKnob', 'KeyerKnob', 'ColorChipKnob', 'LinkKnob', 'ScaleKnob', 'MultilineEvalStringKnob', 'OneViewKnob', 'MultiViewKnob', 'ViewViewKnob', 'PyPulldownKnob', 'GPUEngineKnob', 'MultiArrayKnob', 'ViewPairKnob', 'ListKnob', 'PythonKnob', 'MetaDataKnob', 'PixelAspectKnob', 'CpKnob', 'ToolbarKnob', 'TabGroupKnob', 'PluginPythonKnob', 'ExoGroupKnob', 'MenuKnob', 'PasswordKnob', 'ToolboxKnob', 'TableKnob', 'InputOnlyChannelMaskKnob', 'InputOnlyChannelKnob'), _self)))
 		if kwds:
-			raise ValueError('Got unexpected field names: %r' % kwds.keys())
+			raise ValueError('Got unexpected field names: %r' % list(kwds.keys()))
 		return result
 
 	def __getnewargs__(self):
@@ -142,7 +142,7 @@ def find_common_knobs(nodelist=None):
 			if not nod.Class() in scaned_Types:
 
 				scaned_Types.append(nod.Class())
-				knbs = nod.knobs().values()
+				knbs = list(nod.knobs().values())
 				knob_sets.append(knbs)
 
 		return knob_sets
@@ -178,7 +178,7 @@ def link_common_knob_names(master=None,nodes=None,exclude_names=[],include_names
 				try:
 					n.knob(knb.name()).setExpression( master.fullName() + "." + knb.name() )
 				except:
-					print "Could not Set Expression for knob %s from master Node %s to slave node %s" % (knb.name(),master.name(),n.name())
+					print("Could not Set Expression for knob %s from master Node %s to slave node %s" % (knb.name(),master.name(),n.name()))
 #----------------------------------------------------------------------
 def Copy_common_knob_names(master=None,nodes=None,exclude_names=[],include_names=[]):
 	nodes = None_To_Selected(nodes)
@@ -192,7 +192,7 @@ def Copy_common_knob_names(master=None,nodes=None,exclude_names=[],include_names
 				try:
 					n.knob(knb.name()).fromScript(master.knob(knb.name()).toScript())
 				except:
-					print "Could not Copy knob %s from master Node %s to slave node %s" % (knb.name(),master.name(),n.name())
+					print("Could not Copy knob %s from master Node %s to slave node %s" % (knb.name(),master.name(),n.name()))
 #----------------------------------------------------------------------
 def get_knob_Class(knobs):
 	import nuke

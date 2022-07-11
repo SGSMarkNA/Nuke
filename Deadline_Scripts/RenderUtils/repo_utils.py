@@ -43,7 +43,7 @@ def CallDeadlineCommand(arguments, hideWindow=True):
             startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
 
     environment = {}
-    for key in os.environ.keys():
+    for key in list(os.environ.keys()):
         environment[key] = str(os.environ[key])
 
     # Need to set the PATH, windows seems to load DLLs from the PATH earlier that cwd....

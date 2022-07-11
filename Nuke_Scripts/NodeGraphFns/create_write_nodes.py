@@ -73,7 +73,7 @@ class create_write_nodes (object):
             for e in views:
                 string = str.startswith(e,"A_")
                 stringStrip = e.lstrip('A_')
-                print stringStrip
+                print(stringStrip)
                 if string == True:
                     dot = nuke.createNode("Dot")
                     dot.knob("xpos").setValue(xPos)

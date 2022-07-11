@@ -26,5 +26,5 @@ import logging
 #     logging.error("THR3D was not able to load the Agnostic")
 #     raise ImportError
 
-from render_job import RenderJob
-from templates import *
+from .render_job import RenderJob
+from .templates import *

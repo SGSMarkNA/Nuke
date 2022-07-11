@@ -4,7 +4,7 @@ import nuke
 def flatten(x):
 	result = []
 	for el in x:
-		if hasattr(el, "__iter__") and not isinstance(el, basestring):
+		if hasattr(el, "__iter__") and not isinstance(el, str):
 			result.extend(flatten(el))
 		else:
 			result.append(el)
@@ -30,7 +30,7 @@ def get_Nodes(*args):
 ################################################################################
 class Knob_Assessor(object):
 	def __init__(self, data):
-		for key, value in data.iteritems():
+		for key, value in data.items():
 			key = "".join([k for k in list(key) if not k in invalid_chars])
 			key = str("n_" + key) if key[0] in string_digits else key
 			if isinstance(value, dict):
@@ -68,7 +68,7 @@ class NukeNode(object):
 				self._nukeNode = node
 
 		if self._nukeNode == None:
-			if kwargs.has_key("inputs"):
+			if "inputs" in kwargs:
 				kwargs["inputs"]=get_nukeNode_list(kwargs["inputs"])
 			self._nukeNode = fn(**kwargs)
 	#----------------------------------------------------------------------
@@ -948,7 +948,7 @@ class AnimationCurve(object):
 	#----------------------------------------------------------------------
 	def keys(self):
 		"""self.keys() -> List of keys. @return: List of keys."""
-		return self._nukeNode.keys()
+		return list(self._nukeNode.keys())
 	#----------------------------------------------------------------------
 	def evaluate(self,t):
 		"""self.evaluate(t) -> float Value at time 't'. @param t: Time. @return: The value of the animation at time 't'."""
@@ -1245,9 +1245,9 @@ class FrameRange(object):
 		"""self.setFirst(n) -> None   set the first frame of the range."""
 		return self._nukeNode.setFirst(n)
 	#----------------------------------------------------------------------
-	def next(self):
+	def __next__(self):
 		"""x.next() -> the next value, or raise StopIteration"""
-		return self._nukeNode.next()
+		return next(self._nukeNode)
 	#----------------------------------------------------------------------
 	def isInRange(self,n):
 		"""self.isInRange(n) -> int   return if the frame is inside the range."""
@@ -1303,9 +1303,9 @@ class FrameRanges(object):
 		"""add(r) -> None   add a new frame range."""
 		return self._nukeNode.add(r)
 	#----------------------------------------------------------------------
-	def next(self):
+	def __next__(self):
 		"""x.next() -> the next value, or raise StopIteration"""
-		return self._nukeNode.next()
+		return next(self._nukeNode)
 	#----------------------------------------------------------------------
 	def maxFrame(self):
 		"""maxFrame() -> int   get maximun frame of all ranges."""
@@ -1339,11 +1339,11 @@ class GlobalsEnvironment(object):
 	#----------------------------------------------------------------------
 	def keys(self):
 		""""""
-		return self._nukeNode.keys()
+		return list(self._nukeNode.keys())
 	#----------------------------------------------------------------------
 	def items(self):
 		""""""
-		return self._nukeNode.items()
+		return list(self._nukeNode.items())
 	#----------------------------------------------------------------------
 	def get(self):
 		""""""
@@ -1359,7 +1359,7 @@ class GlobalsEnvironment(object):
 	#----------------------------------------------------------------------
 	def values(self):
 		""""""
-		return self._nukeNode.values()
+		return list(self._nukeNode.values())
 	#----------------------------------------------------------------------
 	def __repr__(self):
 		"""x.__repr__() <==> repr(x)"""
@@ -1565,7 +1565,7 @@ class Menu(MenuItem):
 	#----------------------------------------------------------------------
 	def items(self):
 		"""self.items() -> None Returns a list of sub menu items."""
-		return self._nukeNode.items()
+		return list(self._nukeNode.items())
 	#----------------------------------------------------------------------
 	def findItem(self,name):
 		"""self.findItem(name) -> Menu or None Finds a submenu or command with a particular name. @param name: The name to search for. @return: The submenu or command we found, or None if we could not find anything."""
@@ -1603,7 +1603,7 @@ class MenuBar(object):
 	#----------------------------------------------------------------------
 	def items(self):
 		"""self.items() -> None Returns a list of sub menu items."""
-		return self._nukeNode.items()
+		return list(self._nukeNode.items())
 	#----------------------------------------------------------------------
 	def findItem(self,name):
 		"""self.findItem(name) -> Menu or None Finds a submenu or command with a particular name. @param name: The name to search for. @return: The submenu or command we found, or None if we could not find anything."""
@@ -1817,7 +1817,7 @@ class ToolBar(object):
 	#----------------------------------------------------------------------
 	def items(self):
 		"""self.items() -> None Returns a list of sub menu items."""
-		return self._nukeNode.items()
+		return list(self._nukeNode.items())
 	#----------------------------------------------------------------------
 	def findItem(self,name):
 		"""self.findItem(name) -> Menu or None Finds a submenu or command with a particular name. @param name: The name to search for. @return: The submenu or command we found, or None if we could not find anything."""
@@ -2521,7 +2521,7 @@ class Enumeration_Knob(Unsigned_Knob):
 	#----------------------------------------------------------------------
 	def values(self):
 		"""self.values() -> List of strings. Return list of items. @return: List of strings. Example: w = nuke.nodes.Write() k = w['file_type'] k.values()"""
-		return self._nukeNode.values()
+		return list(self._nukeNode.values())
 	#----------------------------------------------------------------------
 	def setValues(self,items):
 		"""self.setValues(items) -> None. (Re)initialise knob to the supplied list of items. @param items: The new list of values. @return: None. Example: w = nuke.nodes.Write() k = w['file_type'] k.setValues(['exr'])"""

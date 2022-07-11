@@ -6,7 +6,7 @@ Setting 'DIVISION' on the job environment will allow you to call os.environ['DIV
 """
 
 # Custom Imports
-from BasePlugin import BasePlugin
+from .BasePlugin import BasePlugin
 
 
 class Plugin(BasePlugin):
@@ -42,9 +42,9 @@ class Plugin(BasePlugin):
 
 def main():
     x = Plugin()
-    for key, value in x.items():
-        print key + ": ",
-        print value
+    for key, value in list(x.items()):
+        print(key + ": ", end=' ')
+        print(value)
 
 if __name__ == '__main__':
     main()

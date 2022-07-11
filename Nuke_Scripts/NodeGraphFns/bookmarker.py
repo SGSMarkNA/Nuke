@@ -103,18 +103,18 @@ def cyclebookmarks( prt=False ):
 
 	global bookmarks
 	if prt:
-		print bookmarks
+		print(bookmarks)
 
 	if bookmarks is None:
 		bookmarks = iter([n for n in nuke.allNodes() if n['icon'].value() == 'bookmark.png'])
 		if prt:
-			print bookmarks
+			print(bookmarks)
 
 	try:
-		n = bookmarks.next()
+		n = next(bookmarks)
 		n['selected'].setValue( True )
 		if prt:
-			print n['label'].value()
+			print(n['label'].value())
 
 	except:
 		bookmarks = iter([n for n in nuke.allNodes() if n['icon'].value() == 'bookmark.png'])

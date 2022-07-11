@@ -1,7 +1,8 @@
-import Gizmo_UI_Widgets
-import Multi_Group_Clone_Builder
+from . import Gizmo_UI_Widgets
+from . import Multi_Group_Clone_Builder
 import os
 import nuke
+import importlib
 class Multi_Group_Clone_Controls(Gizmo_UI_Widgets.UI_Base_Widget_Knob):
 	def __init__(self,node,parent=None):
 		_ui_foulder = os.path.join(os.path.dirname(__file__), "UI")
@@ -43,7 +44,7 @@ class Multi_Group_Clone_Controls(Gizmo_UI_Widgets.UI_Base_Widget_Knob):
 	def _set_Clone_Offset_Widget(self):
 		""""""
 		clone_placement = self._nuke_node.knob("clone_placement")
-		index = clone_placement.values().index(clone_placement.value())
+		index = list(clone_placement.values()).index(clone_placement.value())
 		self.file_wig.Create_Clone_Placement.setCurrentIndex(index)
 	#----------------------------------------------------------------------
 	def _set_Assigned_Clone_Stop_Widget(self):
@@ -58,7 +59,7 @@ class Multi_Group_Clone_Controls(Gizmo_UI_Widgets.UI_Base_Widget_Knob):
 	#----------------------------------------------------------------------
 	def _update_knobs(self):
 		""""""
-		for key,val in self._knb_name_to_att_dict.iteritems():
+		for key,val in self._knb_name_to_att_dict.items():
 			knb = self._nuke_node.knob(key)
 			val(knb.value())
 		self._set_Clone_Offset_Widget()
@@ -162,12 +163,12 @@ class Multi_Group_Clone_Controls(Gizmo_UI_Widgets.UI_Base_Widget_Knob):
 	#----------------------------------------------------------------------
 	@Gizmo_UI_Widgets.PYQT.Slot()
 	def Select_Clones(self):
-		reload(Multi_Group_Clone_Builder)
+		importlib.reload(Multi_Group_Clone_Builder)
 		Multi_Group_Clone_Builder.Select_Global_Correction_Groups(self._nuke_node)
 	#----------------------------------------------------------------------
 	@Gizmo_UI_Widgets.PYQT.Slot()
 	def Rebuild_Global_Correction_Groups(self):
-		reload(Multi_Group_Clone_Builder)
+		importlib.reload(Multi_Group_Clone_Builder)
 		if not self.is_Stop_Node_Valid():
 			self._error_message_stop_node_does_not_exist()
 		elif not self.is_Stop_Node_In_Pipe_Tree():
@@ -179,7 +180,7 @@ class Multi_Group_Clone_Controls(Gizmo_UI_Widgets.UI_Base_Widget_Knob):
 	#----------------------------------------------------------------------
 	@Gizmo_UI_Widgets.PYQT.Slot()
 	def Rebuild_Non_Cloneable(self):
-		reload(Multi_Group_Clone_Builder)
+		importlib.reload(Multi_Group_Clone_Builder)
 		if not self.is_Stop_Node_Valid():
 			self._error_message_stop_node_does_not_exist()
 		elif not self.is_Stop_Node_In_Pipe_Tree():
@@ -192,7 +193,7 @@ class Multi_Group_Clone_Controls(Gizmo_UI_Widgets.UI_Base_Widget_Knob):
 	#----------------------------------------------------------------------
 	@Gizmo_UI_Widgets.PYQT.Slot()
 	def make_Global_Correction_Groups(self):
-		reload(Multi_Group_Clone_Builder)
+		importlib.reload(Multi_Group_Clone_Builder)
 		if not self.is_Stop_Node_Valid():
 			self._error_message_stop_node_does_not_exist()
 		elif not self.is_Stop_Node_In_Pipe_Tree():

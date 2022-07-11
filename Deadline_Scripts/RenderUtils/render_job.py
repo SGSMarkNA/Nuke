@@ -10,7 +10,7 @@ import os
 import logging
 
 # Custom Imports
-from repo_utils import *
+from .repo_utils import *
 
 
 class RenderJob(object):
@@ -204,7 +204,7 @@ class RenderJob(object):
         Writes out the job files.  job_info.txt, plugin_info.txt
         """
         if not self.plugin:
-            print 'Please define a plugin to before submitting a job!'
+            print('Please define a plugin to before submitting a job!')
             return
 
         path = os.path.join(self.deadlineHome.rstrip('\n').rstrip('\r'), 'temp')
@@ -224,7 +224,7 @@ class RenderJob(object):
 
         # Write the plugin info file
         with open(pluginInfo, 'w') as pInfo:
-            for i, j in self.plugin.items():
+            for i, j in list(self.plugin.items()):
                 if isinstance(j, type(None)):
                     j = ''
                 if isinstance(j, int):

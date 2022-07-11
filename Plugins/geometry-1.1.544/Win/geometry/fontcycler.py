@@ -1,5 +1,6 @@
 
-import nuke, defaults
+import nuke
+import geometry.defaults as defaults
 
 class FontCycler :
 	_instance = None
@@ -26,7 +27,7 @@ class FontCycler :
 		elif self.index >= len(self.fonts): self.index = 0
 		self.setFont()
 
-	def next( self ) :
+	def __next__( self ) :
 		self.cycle(1)
 
 	def prev( self ) :
