@@ -298,7 +298,7 @@ if Major <= 10:
 else:
 	nuke.menu('Nodes').addCommand('Shuffle', 'nuke.createNode(\'Shuffle2\')', 'h', shortcutContext=2)
 	#nuke.menu('Nodes').addCommand('Branch', 'nukescripts.branch()', 'alt+h', shortcutContext=2)
-	nuke.menu("Nuke").menu("Edit").addCommand("Branch", "nukescripts.branch()", "alt+h", shortcutContext=2)
+	nuke.menu("Nuke").menu("Edit").addCommand("Branch", "nukescripts.branch()", "Shift+h", shortcutContext=2)
 
 try:
 	import Nuke_Scripts.ChannelFns.channel_hotbox
