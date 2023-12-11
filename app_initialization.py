@@ -159,7 +159,7 @@ if nuke != None:
 				import J_Ops
 			except ImportError:
 				print("Did Not Import J_Ops Plugins")
-	if Major >= 12:
+	if Major <= 12:
 		## Cryptomatte plugins...
 		if os.path.exists(System_Paths._CODE_NUKE_PLUGINS+"/Cryptomatte"):
 			nuke.pluginAppendPath(System_Paths._CODE_NUKE_PLUGINS+"/Cryptomatte/nuke")
