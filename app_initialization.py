@@ -159,17 +159,17 @@ if nuke != None:
 				import J_Ops
 			except ImportError:
 				print("Did Not Import J_Ops Plugins")
-	
-	## Cryptomatte plugins...
-	if os.path.exists(System_Paths._CODE_NUKE_PLUGINS+"/Cryptomatte"):
-		nuke.pluginAppendPath(System_Paths._CODE_NUKE_PLUGINS+"/Cryptomatte/nuke")
-		nuke.pluginAddPath(System_Paths._CODE_NUKE_PLUGINS+"/Cryptomatte/nuke")
-		os.sys.path.append(System_Paths._CODE_NUKE_PLUGINS+"/Cryptomatte/nuke")
-		try:
-			import cryptomatte_utilities
-			cryptomatte_utilities.setup_cryptomatte()
-		except ImportError:
-			print("Did Not Import Cryptomatte Plugins")
+	if Major >= 12:
+		## Cryptomatte plugins...
+		if os.path.exists(System_Paths._CODE_NUKE_PLUGINS+"/Cryptomatte"):
+			nuke.pluginAppendPath(System_Paths._CODE_NUKE_PLUGINS+"/Cryptomatte/nuke")
+			nuke.pluginAddPath(System_Paths._CODE_NUKE_PLUGINS+"/Cryptomatte/nuke")
+			os.sys.path.append(System_Paths._CODE_NUKE_PLUGINS+"/Cryptomatte/nuke")
+			try:
+				import cryptomatte_utilities
+				cryptomatte_utilities.setup_cryptomatte()
+			except ImportError:
+				print("Did Not Import Cryptomatte Plugins")
 			
 	## VRayDenoiser plugins...
 	if Major == 10:
