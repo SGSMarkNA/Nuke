@@ -5,11 +5,13 @@ if 'USE_WING_DEBUG' in os.environ:
 	try:
 		import wingdbstub
 	except:
-		os.sys.path.append(r"C:\Program Files (x86)\Wing Pro 8")
+		os.sys.path.append(r"C:\Program Files\Wing Pro 10")
 		try:
 			import wingdbstub
 		except:
 			print("Could Not Import Wing Debuger")
+else:
+	print("bypassing Wing debug input")
 # Closes all property boxes at once (especially useful if you like to use floating windows).
 def CloseAllProperties():
 	
