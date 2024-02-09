@@ -6,20 +6,20 @@ if 'USE_WING_DEBUG' in os.environ:
 	try:
 		import wingdbstub
 	except:
-		os.sys.path.append(r"C:\Program Files (x86)\Wing Pro 8")
+		os.sys.path.append(r"C:\Program Files\Wing Pro 10")
 		try:
 			import wingdbstub
 		except:
 			print("Could Not Import Wing Debuger")
 
-try:
-	import wingdbstub
-except:
-	os.sys.path.append(r"C:\Program Files (x86)\Wing Pro 8")
-	try:
-		import wingdbstub
-	except:
-		print("Could Not Import Wing Debuger")
+#try:
+	#import wingdbstub
+#except:
+	#os.sys.path.append(r"C:\Program Files\Wing Pro 10")
+	#try:
+		#import wingdbstub
+	#except:
+		#print("Could Not Import Wing Debuger")
 
 __this_dir = os.path.dirname(__file__)
 # from Environment_Access import System_Paths, System_Settings, utilities
@@ -129,6 +129,7 @@ if nuke != None:
 	import Nuke_Scripts.SystemFns.paths
 	import Nuke_Scripts.Callbacks
 	Nuke_Scripts.SystemFns.paths.AddGizmo_Paths(System_Paths._CODE_NUKE_GIZMOS)
+	Nuke_Scripts.SystemFns.paths.AddGizmo_Paths(System_Paths._AMSTERDAM_NUKE)
 	nuke.pluginAppendPath(System_Paths._CODE_NUKE_PLUGINS)
 	
 	## Geometry_Tools plugins...
