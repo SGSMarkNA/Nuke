@@ -12,6 +12,8 @@ _GIZMO_PATH_STORAGE_DICT = {}
 def generate_Gizmo_Menu():
 	menu = nuke.menu( 'Nuke' ).addMenu("Gizmos")	
 	for m,gs in sorted(_GIZMO_PATH_STORAGE_DICT.items()):
+		if m == "Nuke":
+			m="Amsterdam"
 		m = menu.addMenu(m)
 		for g in sorted(gs, key=str.lower):
 			m.addCommand(g , "nuke.createNode('%s')" % g)
